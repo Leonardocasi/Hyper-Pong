@@ -1,0 +1,16 @@
+body{
+	background-color: #000;
+	overflow: hidden;
+	margin: 0;
+}
+
+#game {
+	padding: 0;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: -webkit-radial-gradient(#267F00, #1B5B00);
+}

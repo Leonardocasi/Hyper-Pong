@@ -6,11 +6,14 @@
 	<title>Hyper Pong</title>
 
 	<link rel="stylesheet" href="style.css">
-
-	<script src="scripts/main.js"></script>
 </head>
 
-<body onload="main()">
+<body>
 	<canvas id="game"></canvas>
+
+	<script type="module">
+		import { main } from './scripts/main.js'
+		main()
+	</script>
 </body>
 </html>

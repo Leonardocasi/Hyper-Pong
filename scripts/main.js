@@ -11,7 +11,18 @@ let DeltaTime = 0
 let lastTimeStamp = 0
 
 function main() {
-	requestAnimationFrame(EventController.update)
+	EventController.start()
+	requestAnimationFrame(mainLoop)
+}
+
+function mainLoop(timeStamp) {
+	requestAnimationFrame(mainLoop)
+	DeltaTime = (timeStamp - lastTimeStamp) / perfectFrames
+	lastTimeStamp = timeStamp
+
+	ctx.clearRect(0,0, canvas.width, canvas.height)
+
+	EventController.update()
 }
 
 export { main, canvas, ctx, DeltaTime }

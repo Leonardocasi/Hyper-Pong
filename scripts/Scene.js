@@ -2,7 +2,7 @@ import * as System from './main.js'
 
 
 
-function drawScene() {
+function draw() {
 	// Color del dibujado del escenario
 	System.ctx.fillStyle = "#aaa"
 
@@ -36,4 +36,4 @@ function drawScene() {
 
 
 
-export { drawScene }
+export { draw }

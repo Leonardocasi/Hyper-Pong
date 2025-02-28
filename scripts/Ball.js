@@ -2,6 +2,8 @@ import * as System from './main.js'
 import * as EventController from './EventController.js'
 import * as Trigo from './trigonometry.js'
 
+
+
 class Ball {
 	constructor(x, y) {
 		this.position = { x, y }
@@ -106,5 +108,7 @@ class Ball {
 
 	}
 }
+
+
 
 export { Ball }

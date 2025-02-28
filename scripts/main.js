@@ -31,6 +31,7 @@ const halfHeight = unscaledHeight/2
 
 
 // Variables para el DeltaTime
+// (Esto hace posible las físicas independientes a los FPS)
 const perfectFrames = 1000/60
 let DeltaTime = 0
 let lastTimeStamp = 0

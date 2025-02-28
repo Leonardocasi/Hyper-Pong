@@ -12,6 +12,8 @@ let player1 = new Player.Player(Player.width * 2, 0, 0 )
 
 
 
+// Función de inicialización del juego
+// (Solo se ejecuta una vez al inicio y cuando el programa lo solicite de nuevo en un reinicio)
 function start() {
 	player1.start()
 
@@ -21,16 +23,16 @@ function start() {
 
 
 
-
+// Función búcle donde se llevará a cabo toda la lógica del juego.
+// (Se ejecuta en cada frame del juego)
 function update() {
-	scene.drawScene()
+	scene.draw()
 
 	player1.draw()
 
 	Balls[0].update()
 	Balls[0].draw()
 }
-
 
 
 

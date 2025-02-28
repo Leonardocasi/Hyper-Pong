@@ -12,6 +12,7 @@ let Balls
 
 function start() {
 	Balls = [ new Ball.Ball( 100, 100 ) ]
+	Balls[0].start()
 }
 
 

@@ -7,42 +7,47 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 65				// ángulo en grados.
+		this.angle = 155				// ángulo en grados.
 
-		this.size = 24
+		this.size = 20
+	}
 
-		this.start = true
+
+
+	// Función para la iniciación
+	start() {
+		// Obtención de las componentes de velocidad
+		this.speed = this.speedCalculation(this.velocity, this.angle)
 	}
 
 
 
 	// Función de actualización de la pelota.
 	update() {
-		// velocidad Inicial
-		if (this.start) {
-			this.speed = this.speedCalculation(this.velocity, this.angle)
-			this.start = false
-		}
-
-
 		// Colisión Superior
 		if (this.position.y <= 0) {
 			this.speed.y = -this.speed.y
 		}
 
 		// Colisión inferior
-		if ((this.position.y + this.size) >= System.scaledHeight) {
+		if ((this.position.y + this.size) >= System.unscaledHeight) {
 			this.speed.y = -this.speed.y
 		}
 
-		// Colisiones laterales
-		if (this.position.x >= System.scaledWidth) {
-			EventController.start()
+		// Colision lateral derecha 
+		if (this.position.x >= System.unscaledWidth) {
+			EventController.start()						// Reinicio del juego
+		}
+
+		// Colisión lateral izquierda
+		if (this.position.x + this.size <= 0) {
+			EventController.start()						// Reinicio del juego
 		}
 
 
-		this.position.x += this.speed.x * System.DeltaTime
-		this.position.y += this.speed.y * System.DeltaTime
+		// Actualización de la posición de la pelota
+		//this.position.x += this.speed.x * System.DeltaTime
+		//this.position.y += this.speed.y * System.DeltaTime
 	}
 
 
@@ -62,8 +67,10 @@ class Ball {
 
 	// Función para calcular las componentes verticales y horizontales de la velocidad.
 	speedCalculation(velocity, angle) {
-		let x = velocity * Trigo.cosTable[angle]
-		let y = velocity * Trigo.sinTable[angle]
+		let x = (velocity * Trigo.cosTable[angle]).toFixed(4)
+		let y = (velocity * Trigo.sinTable[angle]).toFixed(4)
+
+		//console.log(x + ", " + y)
 
 		return { x, y }
 	}

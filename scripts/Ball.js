@@ -7,9 +7,10 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 155				// ángulo en grados.
+		this.angle = 45				// ángulo en grados.
 
 		this.size = 20
+		this.radius = this.size/2
 	}
 
 
@@ -25,41 +26,56 @@ class Ball {
 	// Función de actualización de la pelota.
 	update() {
 		// Colisión Superior
-		if (this.position.y <= 0) {
-			this.speed.y = -this.speed.y
+		if (Math.round(this.position.y) <= this.radius) {
+			this.speed.y *= -1
 		}
 
 		// Colisión inferior
-		if ((this.position.y + this.size) >= System.unscaledHeight) {
-			this.speed.y = -this.speed.y
+		if (Math.round(System.unscaledHeight - this.position.y) <= this.radius) {
+			this.speed.y *= -1
 		}
 
 		// Colision lateral derecha 
-		if (this.position.x >= System.unscaledWidth) {
+		if (Math.round(System.unscaledWidth - this.position.x) <= -this.radius) {
 			EventController.start()						// Reinicio del juego
 		}
 
 		// Colisión lateral izquierda
-		if (this.position.x + this.size <= 0) {
+		if (Math.round(this.position.x) <= -this.radius) {
 			EventController.start()						// Reinicio del juego
 		}
 
 
 		// Actualización de la posición de la pelota
-		//this.position.x += this.speed.x * System.DeltaTime
-		//this.position.y += this.speed.y * System.DeltaTime
+		this.position.x += this.speed.x * System.DeltaTime
+		this.position.y += this.speed.y * System.DeltaTime
 	}
 
 
 
 	// Función de dibujado de la pelota.
 	draw() {
-		System.ctx.fillStyle = "#fff"
-		System.ctx.fillRect(
+		// Dibujo
+		System.ctx.beginPath()
+		System.ctx.arc(
 			(this.position.x * System.scale).toFixed(1),
 			(this.position.y * System.scale).toFixed(1),
-			(this.size * System.scale).toFixed(1),
-			(this.size * System.scale).toFixed(1)
+			(this.radius * System.scale).toFixed(1),
+			0,		// Angulo de inicio
+			6.2832,	// Angulo final (Ambos en radianes)
+			false
+		)
+		System.ctx.fillStyle = "#fff"
+		System.ctx.fill()
+		System.ctx.closePath()
+
+		// Dibujado del centro. 
+		System.ctx.fillStyle = "#000"
+		System.ctx.fillRect(
+			((this.position.x-1) * System.scale).toFixed(1),
+			((this.position.y-1) * System.scale).toFixed(1),
+			(2 * System.scale).toFixed(1),
+			(2 * System.scale).toFixed(1)
 		)
 	}
 

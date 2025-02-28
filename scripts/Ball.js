@@ -7,7 +7,7 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 45				// ángulo en grados.
+		this.angle = 70				// ángulo en grados.
 
 		this.size = 20
 		this.radius = this.size/2
@@ -26,22 +26,30 @@ class Ball {
 	// Función de actualización de la pelota.
 	update() {
 		// Colisión Superior
-		if (Math.round(this.position.y) <= this.radius) {
+		if (Math.round(this.position.y) <= Math.round(this.radius + System.SceneDensity)) {
+			this.position.y = this.radius + System.SceneDensity
 			this.speed.y *= -1
+
+			//this.speed.x = 0
+			//this.speed.y = 0
 		}
 
 		// Colisión inferior
-		if (Math.round(System.unscaledHeight - this.position.y) <= this.radius) {
+		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + System.SceneDensity)) {
+			this.position.y = System.unscaledHeight - this.radius - System.SceneDensity
 			this.speed.y *= -1
+
+			//this.speed.x = 0
+			//this.speed.y = 0
 		}
 
 		// Colision lateral derecha 
-		if (Math.round(System.unscaledWidth - this.position.x) <= -this.radius) {
+		if (Math.round(System.unscaledWidth - this.position.x) < -this.radius) {
 			EventController.start()						// Reinicio del juego
 		}
 
 		// Colisión lateral izquierda
-		if (Math.round(this.position.x) <= -this.radius) {
+		if (Math.round(this.position.x) < -this.radius) {
 			EventController.start()						// Reinicio del juego
 		}
 

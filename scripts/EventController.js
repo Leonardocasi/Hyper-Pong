@@ -1,5 +1,6 @@
 import * as System from './main.js'
 import * as Ball from './Ball.js'
+import * as scene from './Scene.js'
 
 
 
@@ -19,6 +20,8 @@ function start() {
 
 
 function update() {
+	scene.drawScene()
+
 	Balls[0].update()
 	Balls[0].draw()
 }

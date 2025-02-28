@@ -16,6 +16,11 @@ let scale = 1
 
 
 
+// Variables para el escenario
+let SceneDensity = 4
+
+
+
 // Resoluciones base para las físicas.
 const unscaledWidth = 1280
 const unscaledHeight = 720
@@ -89,5 +94,8 @@ export {
 	unscaledWidth,
 	unscaledHeight,
 	halfWidth,
-	halfHeight
+	halfHeight,
+
+	// Variables para el escenario.
+	SceneDensity
 }

@@ -2,7 +2,7 @@ import * as EventController from './EventController.js'
 
 
 
-
+// Inicialización del entorno.
 const canvas = document.getElementById("game")
 const ctx = canvas.getContext("2d")
 
@@ -12,19 +12,27 @@ canvas.height = innerHeight
 let lastWidth = innerWidth
 let lastHeight = innerHeight
 
-const scaledWidth = 1280
-const scaledHeight = 720
-
-let widthLower = false
 let scale = 1
 
+
+
+// Resoluciones base para las físicas.
+const unscaledWidth = 1280
+const unscaledHeight = 720
+
+const halfWidth = unscaledWidth/2
+const halfHeight = unscaledHeight/2
+
+
+
+// Variables para el DeltaTime
 const perfectFrames = 1000/60
 let DeltaTime = 0
 let lastTimeStamp = 0
 
 
 
-
+// Función principal. Inicialización general.
 function main() {
 	newRes()
 
@@ -32,6 +40,9 @@ function main() {
 	requestAnimationFrame(mainLoop)
 }
 
+
+
+// Función búcle principal del juego.
 function mainLoop(timeStamp) {
 	requestAnimationFrame(mainLoop)
 	DeltaTime = (timeStamp - lastTimeStamp) / perfectFrames
@@ -51,7 +62,7 @@ function mainLoop(timeStamp) {
 
 
 
-
+// Reestablecimiento de la resolución real del juego.
 function newRes() {
 	canvas.width = innerWidth
 	canvas.height = canvas.width * 9 / 16
@@ -66,5 +77,17 @@ function newRes() {
 
 
 
+// Exportación de todas las variables que se utilizarán en otros códigos.
+export {
+	main,
+	canvas,
+	ctx,
+	DeltaTime,
+	scale,
 
-export { main, canvas, ctx, DeltaTime, scale, scaledWidth, scaledHeight }
+	// Resolución base para las físicas.
+	unscaledWidth,
+	unscaledHeight,
+	halfWidth,
+	halfHeight
+}

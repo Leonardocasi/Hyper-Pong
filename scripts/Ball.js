@@ -1,6 +1,7 @@
 import * as System from './main.js'
 import * as EventController from './EventController.js'
-import * as Trigo from './trigonometry.js'
+import * as myMath from './myMath.js'
+import * as Scene from './Scene.js'
 
 
 
@@ -9,7 +10,7 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 70				// ángulo en grados.
+		this.angle = 180				// ángulo en grados.
 
 		this.size = 20
 		this.radius = this.size/2
@@ -28,8 +29,8 @@ class Ball {
 	// Función de actualización de la pelota.
 	update() {
 		// Colisión Superior
-		if (Math.round(this.position.y) <= Math.round(this.radius + System.SceneDensity)) {
-			this.position.y = this.radius + System.SceneDensity
+		if (Math.round(this.position.y) <= Math.round(this.radius + Scene.density)) {
+			this.position.y = this.radius + Scene.density
 			this.speed.y *= -1
 
 			//this.speed.x = 0
@@ -37,8 +38,8 @@ class Ball {
 		}
 
 		// Colisión inferior
-		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + System.SceneDensity)) {
-			this.position.y = System.unscaledHeight - this.radius - System.SceneDensity
+		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + Scene.density)) {
+			this.position.y = System.unscaledHeight - this.radius - Scene.density
 			this.speed.y *= -1
 
 			//this.speed.x = 0
@@ -68,9 +69,9 @@ class Ball {
 		// Dibujo
 		System.ctx.beginPath()
 		System.ctx.arc(
-			(this.position.x * System.scale).toFixed(1),
-			(this.position.y * System.scale).toFixed(1),
-			(this.radius * System.scale).toFixed(1),
+			myMath.redondeo(this.position.x * System.scale, 1),
+			myMath.redondeo(this.position.y * System.scale, 1),
+			myMath.redondeo(this.radius * System.scale, 1),
 			0,		// Angulo de inicio
 			6.2832,	// Angulo final (Ambos en radianes)
 			false
@@ -78,34 +79,23 @@ class Ball {
 		System.ctx.fillStyle = "#fff"
 		System.ctx.fill()
 		System.ctx.closePath()
-
-		// Dibujado del centro. 
-		System.ctx.fillStyle = "#000"
-		System.ctx.fillRect(
-			((this.position.x-1) * System.scale).toFixed(1),
-			((this.position.y-1) * System.scale).toFixed(1),
-			(2 * System.scale).toFixed(1),
-			(2 * System.scale).toFixed(1)
-		)
 	}
 
 
 
 	// Función para calcular las componentes verticales y horizontales de la velocidad.
 	speedCalculation(velocity, angle) {
-		let x = (velocity * Trigo.cosTable[angle]).toFixed(4)
-		let y = (velocity * Trigo.sinTable[angle]).toFixed(4)
-
-		//console.log(x + ", " + y)
-
+		let x = myMath.redondeo(velocity * myMath.degCos(angle), 4)
+		let y = myMath.redondeo(velocity * myMath.degSin(angle), 4)
 		return { x, y }
 	}
 
 
 
 	// Función para obtener el nuevo ángulo trás la colisión.
-	getNewAngle() {
-
+	getNewAngle(x, y) {
+		let angle = myMath.degAtan(x, y)
+		return angle
 	}
 }
 

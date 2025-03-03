@@ -16,11 +16,6 @@ let scale = 1
 
 
 
-// Variables para el escenario
-let SceneDensity = 4
-
-
-
 // Resoluciones base para las físicas.
 const unscaledWidth = 1280
 const unscaledHeight = 720
@@ -35,6 +30,17 @@ const halfHeight = unscaledHeight/2
 const perfectFrames = 1000/60
 let DeltaTime = 0
 let lastTimeStamp = 0
+
+
+
+// Variables para los controles.
+const Key = {
+	Player1Up:		false,
+	Player1Down:	false,
+	
+	Player2Up:		false,
+	Player2Down:	false,
+}
 
 
 
@@ -83,6 +89,34 @@ function newRes() {
 
 
 
+// Detección del presionado de una tecla.
+addEventListener('keydown', ({keyCode}) => {
+	commuteKey(keyCode, true)
+})
+
+// Detección del alza de una tecla.
+addEventListener('keyup', ({keyCode}) => {
+	commuteKey(keyCode, false)
+})
+
+
+
+// Función de alternación para Keys
+function commuteKey(keyCode, State) {
+	switch (keyCode) {
+
+		// Movimiento del jugador 1.
+		case 87:	Key.Player1Up = State;		break
+		case 83:	Key.Player1Down = State;	break
+
+		// Movimiento del jugador 2.
+		case 38:	Key.Player2Up = State;		break
+		case 40:	Key.Player2Down = State;	break
+	}
+}
+
+
+
 // Exportación de todas las variables que se utilizarán en otros códigos.
 export {
 	main,
@@ -97,6 +131,6 @@ export {
 	halfWidth,
 	halfHeight,
 
-	// Variables para el escenario.
-	SceneDensity
+	// Controles
+	Key
 }

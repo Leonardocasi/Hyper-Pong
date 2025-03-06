@@ -20,7 +20,9 @@ function start() {
 	player2.start()
 
 	Balls = [ new Ball.Ball( System.halfWidth, System.halfHeight ) ]
-	Balls[0].start()
+	Balls.forEach(Ball => {
+		Ball.start()
+	})
 }
 
 
@@ -29,7 +31,12 @@ function start() {
 // (Se ejecuta en cada frame del juego)
 function update() {
 	// Lógica del juego (dividirlo de esta forma me será util para pausar el juego)
-	Balls[0].update()
+	Balls.forEach(Ball => {
+		Ball.update()
+	})
+
+	player1.update(System.Key.Player1Up, System.Key.Player1Down)
+	player2.update(System.Key.Player2Up, System.Key.Player2Down)
 
 
 
@@ -44,4 +51,4 @@ function update() {
 
 
 
-export {start, update}
+export { start, update, Balls }

@@ -32,18 +32,12 @@ class Ball {
 		if (Math.round(this.position.y) <= Math.round(this.radius + Scene.density)) {
 			this.position.y = this.radius + Scene.density
 			this.speed.y *= -1
-
-			//this.speed.x = 0
-			//this.speed.y = 0
 		}
 
 		// Colisión inferior
 		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + Scene.density)) {
 			this.position.y = System.unscaledHeight - this.radius - Scene.density
 			this.speed.y *= -1
-
-			//this.speed.x = 0
-			//this.speed.y = 0
 		}
 
 		// Colision lateral derecha 
@@ -94,8 +88,7 @@ class Ball {
 
 	// Función para obtener el nuevo ángulo trás la colisión.
 	getNewAngle(x, y) {
-		let angle = myMath.degAtan(x, y)
-		return angle
+		this.angle = myMath.degAtan(x, y)
 	}
 }
 

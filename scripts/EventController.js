@@ -16,13 +16,13 @@ let player2 = new Players.Player("right")
 // Función de inicialización del juego
 // (Solo se ejecuta una vez al inicio y cuando el programa lo solicite de nuevo en un reinicio)
 function start() {
-	player1.start()
-	player2.start()
-
 	Balls = [ new Ball.Ball( System.halfWidth, System.halfHeight ) ]
 	Balls.forEach(Ball => {
 		Ball.start()
 	})
+	
+	player1.start()
+	player2.start()
 }
 
 

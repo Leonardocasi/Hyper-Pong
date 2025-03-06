@@ -10,7 +10,7 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 180				// ángulo en grados.
+		this.angle = 45				// ángulo en grados.
 
 		this.size = 20
 		this.radius = this.size/2

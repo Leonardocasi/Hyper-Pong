@@ -15,7 +15,7 @@ class Player {
 		this.side = side
 		this.position = {x: 0, y: 0 }
 
-		this.speed = 8
+		this.speed = 10
 	}
 
 
@@ -43,6 +43,7 @@ class Player {
 
 
 
+	// Detección de colición con la pelota.
 	ballColition() {
 		Balls.forEach(Ball => {
 			let closestX = Math.max(this.position.x, Math.min(Ball.position.x, this.position.x + width))
@@ -54,10 +55,55 @@ class Player {
 			let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
 
 			if (distance <= Ball.radius) {
-				Ball.speed.x *= -1
-				console.log(`Colisión en: (${closestX}, ${closestY})`)
+				this.newAngle(Ball, closestY)
 			}
 		})
+	}
+
+
+
+	// Cambio de ángulo de la pelota.
+	newAngle(Ball, closestY) {
+		//Ball.speed.x *= -1
+
+		let hitY = closestY - this.position.y
+		let zone = Math.round(hitY/(height/5))
+		//console.log(zone)
+
+		let Normal
+		let NormalX
+		let NormalY
+
+		switch (zone) { // 70, 45, 10
+			case 0:
+				Normal = 290
+				break
+			case 1:
+				Normal = 315
+				break
+			case 2:
+				Normal = 350
+				break
+			case 3:
+				Normal = 10
+				break
+			case 4:
+				Normal = 45
+				break
+			case 5:
+				Normal = 70
+				break
+		}
+
+		NormalX = myMath.degCos(Normal)
+		NormalY = myMath.degSin(Normal)
+
+		let product = Ball.speed.x * NormalX + Ball.speed.y * NormalY
+
+		Ball.speed.x = Ball.speed.x - 2 * product * NormalX
+		Ball.speed.y = Ball.speed.y - 2 * product * NormalY
+
+		console.log(Ball.speed)
 	}
 
 

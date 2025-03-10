@@ -70,40 +70,28 @@ class Player {
 		let zone = Math.round(hitY/(height/5))
 		//console.log(zone)
 
-		let Normal
-		let NormalX
-		let NormalY
+		let NewAngle
 
 		switch (zone) { // 70, 45, 10
 			case 0:
-				Normal = 290
+				NewAngle = 290
 				break
 			case 1:
-				Normal = 315
+				NewAngle = 315
 				break
 			case 2:
-				Normal = 350
+				NewAngle = 350
 				break
 			case 3:
-				Normal = 10
+				NewAngle = 10
 				break
 			case 4:
-				Normal = 45
+				NewAngle = 45
 				break
 			case 5:
-				Normal = 70
+				NewAngle = 70
 				break
 		}
-
-		NormalX = myMath.degCos(Normal)
-		NormalY = myMath.degSin(Normal)
-
-		let product = Ball.speed.x * NormalX + Ball.speed.y * NormalY
-
-		Ball.speed.x = Ball.speed.x - 2 * product * NormalX
-		Ball.speed.y = Ball.speed.y - 2 * product * NormalY
-
-		console.log(Ball.speed)
 	}
 
 

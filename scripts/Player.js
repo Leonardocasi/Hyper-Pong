@@ -73,8 +73,8 @@ class Player {
 		let zone = Math.round(hitY/(height/5))
 		//console.log(zone)
 
-		let NewAngleRight = [315, 315, 350, 10, 45, 45]
-		let NewAngleLeft = [225, 225, 190, 170, 135, 135]
+		let NewAngleRight = [315, 333, 350, 10, 27, 45]
+		let NewAngleLeft = [225, 208, 190, 170, 152, 135]
 
 		let NewAngle = 0
 

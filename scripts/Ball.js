@@ -6,11 +6,13 @@ import * as Scene from './Scene.js'
 
 
 class Ball {
-	constructor(x, y) {
+	constructor(x, y, angle) {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
-		this.velocity = 15				// Rapidez, valor escalar.
-		this.angle = 45				// ángulo en grados.
+		this.velocity = 18				// Rapidez, valor escalar.
+		this.angle = angle				// ángulo en grados.
+
+		this.friction = 0.999
 
 		this.size = 20
 		this.radius = this.size/2
@@ -51,6 +53,11 @@ class Ball {
 		if (Math.round(this.position.x) < -this.radius) {
 			EventController.start()						// Reinicio del juego
 		}
+
+
+		// Fricción
+		this.speed.x *= this.friction * System.DeltaTime
+		this.speed.y *= this.friction * System.DeltaTime
 
 
 		// Actualización de la posición de la pelota

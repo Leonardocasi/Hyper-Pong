@@ -12,7 +12,7 @@ class Ball {
 		this.velocity = 18				// Rapidez, valor escalar.
 		this.angle = angle				// ángulo en grados.
 
-		this.friction = 0.999
+		this.friction = 0.998
 
 		this.size = 20
 		this.radius = this.size/2
@@ -46,23 +46,27 @@ class Ball {
 
 		// Colision lateral derecha 
 		if (Math.round(System.unscaledWidth - this.position.x) < -this.radius) {
-			EventController.start()						// Reinicio del juego
+			//EventController.start()						// Reinicio del juego
+			this.speed.x *= -1
 		}
 
 		// Colisión lateral izquierda
 		if (Math.round(this.position.x) < -this.radius) {
-			EventController.start()						// Reinicio del juego
+			//EventController.start()						// Reinicio del juego
+			this.speed.x *= -1
 		}
 
 
 		// Fricción
-		this.speed.x *= this.friction * System.DeltaTime
-		this.speed.y *= this.friction * System.DeltaTime
+		this.speed.x *= this.friction
+		this.speed.y *= this.friction
 
 
 		// Actualización de la posición de la pelota
 		this.position.x += this.speed.x * System.DeltaTime
 		this.position.y += this.speed.y * System.DeltaTime
+
+		//console.log(this.position)
 	}
 
 

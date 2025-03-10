@@ -12,7 +12,7 @@ class Ball {
 		this.velocity = 22				// Rapidez, valor escalar.
 		this.angle = angle				// ángulo en grados.
 
-		this.friction = 0.995
+		this.friction = 0.97
 		this.frictionTimer = 0
 
 		this.size = 28
@@ -51,6 +51,8 @@ class Ball {
 		if (this.frictionTimer >= 5) {
 			this.speed.x *= this.friction
 			this.speed.y *= this.friction
+
+			this.frictionTimer = 0
 		}
 
 
@@ -59,7 +61,6 @@ class Ball {
 		this.position.y += this.speed.y * System.DeltaTime
 
 		this.frictionTimer += System.DeltaTime
-		//console.log(this.position)
 	}
 
 

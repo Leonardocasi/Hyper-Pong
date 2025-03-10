@@ -2,6 +2,7 @@ import * as System from './main.js'
 
 
 
+// El ancho de las líneas de la escena.
 const density = 4
 
 

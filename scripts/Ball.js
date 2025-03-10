@@ -21,7 +21,7 @@ class Ball {
 	// Función para la iniciación
 	start() {
 		// Obtención de las componentes de velocidad
-		this.speed = this.speedCalculation(this.velocity, this.angle)
+		this.speedCalculation()
 	}
 
 
@@ -32,12 +32,14 @@ class Ball {
 		if (Math.round(this.position.y) <= Math.round(this.radius + Scene.density)) {
 			this.position.y = this.radius + Scene.density
 			this.speed.y *= -1
+			this.getNewAngle()
 		}
 
 		// Colisión inferior
 		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + Scene.density)) {
 			this.position.y = System.unscaledHeight - this.radius - Scene.density
 			this.speed.y *= -1
+			this.getNewAngle()
 		}
 
 		// Colision lateral derecha 
@@ -78,17 +80,17 @@ class Ball {
 
 
 	// Función para calcular las componentes verticales y horizontales de la velocidad.
-	speedCalculation(velocity, angle) {
-		let x = myMath.redondeo(velocity * myMath.degCos(angle), 4)
-		let y = myMath.redondeo(velocity * myMath.degSin(angle), 4)
-		return { x, y }
+	speedCalculation() {
+		let x = myMath.redondeo(this.velocity * myMath.degCos(this.angle), 4)
+		let y = myMath.redondeo(this.velocity * myMath.degSin(this.angle), 4)
+		this.speed = { x, y }
 	}
 
 
 
 	// Función para obtener el nuevo ángulo trás la colisión.
-	getNewAngle(x, y) {
-		this.angle = myMath.degAtan(x, y)
+	getNewAngle() {
+		this.angle = myMath.degAtan(this.speed.x, this.speed.y)
 	}
 }
 

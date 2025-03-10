@@ -1,4 +1,5 @@
 import * as System from './main.js'
+import * as Scene from './Scene.js'
 import * as myMath from './myMath.js'
 import {Balls} from './EventController.js'
 
@@ -35,8 +36,10 @@ class Player {
 
 	// Función de actualización del jugador.
 	update(Up, Down) {
-		if (Up)		this.position.y -= this.speed * System.DeltaTime
-		if (Down)	this.position.y += this.speed * System.DeltaTime
+		if (Up && this.position.y > Scene.density)		
+			this.position.y -= this.speed * System.DeltaTime
+		if (Down && this.position.y + height < System.unscaledHeight - Scene.density)	
+			this.position.y += this.speed * System.DeltaTime
 
 		this.ballColition()
 	}
@@ -55,7 +58,7 @@ class Player {
 			let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
 
 			if (distance <= Ball.radius) {
-				this.newAngle(Ball, closestY)
+				this.newAngle(Ball, closestX, closestY)
 			}
 		})
 	}
@@ -63,35 +66,25 @@ class Player {
 
 
 	// Cambio de ángulo de la pelota.
-	newAngle(Ball, closestY) {
+	newAngle(Ball, closestX, closestY) {
 		//Ball.speed.x *= -1
 
 		let hitY = closestY - this.position.y
 		let zone = Math.round(hitY/(height/5))
 		//console.log(zone)
 
-		let NewAngle
+		let NewAngleRight = [315, 315, 350, 10, 45, 45]
+		let NewAngleLeft = [225, 225, 190, 170, 135, 135]
 
-		switch (zone) { // 70, 45, 10
-			case 0:
-				NewAngle = 290
-				break
-			case 1:
-				NewAngle = 315
-				break
-			case 2:
-				NewAngle = 350
-				break
-			case 3:
-				NewAngle = 10
-				break
-			case 4:
-				NewAngle = 45
-				break
-			case 5:
-				NewAngle = 70
-				break
-		}
+		let NewAngle = 0
+
+		if (closestX > this.position.x + width/2)
+			NewAngle = NewAngleRight[zone]
+		else if (closestX < this.position.x + width/2)
+			NewAngle = NewAngleLeft[zone]
+
+		Ball.angle = NewAngle
+		Ball.speedCalculation()
 	}
 
 

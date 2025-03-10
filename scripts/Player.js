@@ -38,8 +38,13 @@ class Player {
 	update(Up, Down) {
 		if (Up && this.position.y > Scene.density)		
 			this.position.y -= this.speed * System.DeltaTime
+		else if (this.position.y < Scene.density)
+			this.position.y = Scene.density
+
 		if (Down && this.position.y + height < System.unscaledHeight - Scene.density)	
 			this.position.y += this.speed * System.DeltaTime
+		else if (this.position.y + height > System.unscaledHeight - Scene.density)
+			this.position.y = System.unscaledHeight - Scene.density - height
 
 		this.ballColition()
 	}
@@ -103,4 +108,4 @@ class Player {
 
 
 
-export { Player, width }
+export { Player, width, height }

@@ -41,4 +41,11 @@ function redondeo(numero, decimales) {
 
 
 
-export { degSin, degCos, degAtan, redondeo }
+// Número aleatorio en un determinado rango.
+function random(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
+
+export { degSin, degCos, degAtan, redondeo, random }

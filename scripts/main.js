@@ -37,9 +37,11 @@ let lastTimeStamp = 0
 const Key = {
 	Player1Up:		false,
 	Player1Down:	false,
+	Player1Serve:	false,
 	
 	Player2Up:		false,
 	Player2Down:	false,
+	Player2Serve:	false
 }
 
 
@@ -92,6 +94,7 @@ function newRes() {
 // Detección del presionado de una tecla.
 addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
+	//console.log(keyCode)
 })
 
 // Detección del alza de una tecla.
@@ -108,10 +111,12 @@ function commuteKey(keyCode, State) {
 		// Movimiento del jugador 1.
 		case 87:	Key.Player1Up = State;		break
 		case 83:	Key.Player1Down = State;	break
+		case 68:	Key.Player1Serve = State;	break
 
 		// Movimiento del jugador 2.
 		case 38:	Key.Player2Up = State;		break
 		case 40:	Key.Player2Down = State;	break
+		case 37:	Key.Player2Serve = State;	break
 	}
 }
 

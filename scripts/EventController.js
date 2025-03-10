@@ -12,7 +12,13 @@ let Balls
 let player1 = new Players.Player("left")
 let player2 = new Players.Player("right")
 
-let GameMode = 0		// 0: Saque de jugador 1, 1: Saque de jugador 2, 2: Juego
+let lastGameState = 0
+let GameMode = 0		// 0: Saque de jugador 1, 
+						// 1: Saque de jugador 2, 
+						// 2: Juego, 
+						// 3: Pausa
+
+let PauseKey = 0
 
 let goalsPlayer1 = 0
 let goalsPlayer2 = 0
@@ -38,6 +44,24 @@ function start() {
 // Función búcle donde se llevará a cabo toda la lógica del jusego.
 // (Se ejecuta en cada frame del juego)
 function update() {
+	// Detección de la pausa.
+	if ((System.Key.Esc || System.Key.Enter) && !PauseKey) {
+		PauseKey = 1
+
+		if (GameMode != 3) {
+			lastGameState = GameMode
+			GameMode = 3
+		}
+		else GameMode = lastGameState
+	}
+
+	if (!System.Key.Enter && !System.Key.Esc) {
+		PauseKey = 0
+	}
+	
+
+
+
 	// Lógica del juego (dividirlo de esta forma me será util para pausar el juego)
 	Balls.forEach(Ball => {
 		// Modo Saque del jugador 1
@@ -76,20 +100,26 @@ function update() {
 			if (Math.round(System.unscaledWidth - Ball.position.x) < -Ball.radius) {
 				goalsPlayer1++
 				GameMode = 1						// Reinicio de la pelota
+				console.log(`Jugador 1: ${goalsPlayer1}, Jugador 2: ${goalsPlayer2}`)
 			}
 
 			// Colisión lateral izquierda
 			if (Math.round(Ball.position.x) < -Ball.radius) {
 				goalsPlayer2++
 				GameMode = 0						// Reinicio de la pelota
+				console.log(`Jugador 1: ${goalsPlayer1}, Jugador 2: ${goalsPlayer2}`)
 			}
 
 			Ball.update()
 		}
 	})
 
-	player1.update(System.Key.Player1Up, System.Key.Player1Down)
-	player2.update(System.Key.Player2Up, System.Key.Player2Down)
+
+	// Movimiento de los jugadores
+	if (GameMode != 3) {
+		player1.update(System.Key.Player1Up, System.Key.Player1Down)
+		player2.update(System.Key.Player2Up, System.Key.Player2Down)
+	}
 
 
 

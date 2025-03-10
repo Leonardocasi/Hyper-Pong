@@ -41,7 +41,10 @@ const Key = {
 	
 	Player2Up:		false,
 	Player2Down:	false,
-	Player2Serve:	false
+	Player2Serve:	false,
+
+	Esc:			false,
+	Enter:			false,
 }
 
 
@@ -117,6 +120,10 @@ function commuteKey(keyCode, State) {
 		case 38:	Key.Player2Up = State;		break
 		case 40:	Key.Player2Down = State;	break
 		case 37:	Key.Player2Serve = State;	break
+
+		// Adicionales importantes.
+		case 27:	Key.Esc = State;			break
+		case 13:	Key.Enter = State;			break
 	}
 }
 

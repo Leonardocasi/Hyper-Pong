@@ -14,3 +14,7 @@ body{
 	right: 0;
 	background: -webkit-radial-gradient(#000000, #111);
 }
+
+.sprite {
+	display: none;
+}

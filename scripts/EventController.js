@@ -3,6 +3,7 @@ import * as Ball from './Ball.js'
 import * as scene from './Scene.js'
 import * as Players from './Player.js'
 import * as myMath from './myMath.js'
+import { Scoreboard } from './Scoreboard.js'
 
 
 
@@ -19,6 +20,9 @@ let GameMode = 0		// 0: Saque de jugador 1,
 						// 3: Pausa
 
 let PauseKey = 0
+
+let scoreboard1
+let scoreboard2
 
 let goalsPlayer1 = 0
 let goalsPlayer2 = 0
@@ -37,6 +41,9 @@ function start() {
 	
 	player1.start()
 	player2.start()
+
+	scoreboard1 = new Scoreboard(System.unscaledWidth/4)
+	scoreboard2 = new Scoreboard(System.unscaledWidth/4*3)
 }
 
 
@@ -96,18 +103,18 @@ function update() {
 		// Modo Juego
 		if (GameMode == 2) {
 			// Detección de goles
-			// Colision lateral derecha 
+			// Colision lateral derecha (Gol del Jugador 1)
 			if (Math.round(System.unscaledWidth - Ball.position.x) < -Ball.radius) {
 				goalsPlayer1++
+				scoreboard1.update(goalsPlayer1)
 				GameMode = 1						// Reinicio de la pelota
-				console.log(`Jugador 1: ${goalsPlayer1}, Jugador 2: ${goalsPlayer2}`)
 			}
 
 			// Colisión lateral izquierda
 			if (Math.round(Ball.position.x) < -Ball.radius) {
 				goalsPlayer2++
+				scoreboard2.update(goalsPlayer2)
 				GameMode = 0						// Reinicio de la pelota
-				console.log(`Jugador 1: ${goalsPlayer1}, Jugador 2: ${goalsPlayer2}`)
 			}
 
 			Ball.update()
@@ -125,6 +132,9 @@ function update() {
 
 	// Llamadas de dibujado
 	scene.draw()
+
+	scoreboard1.draw()
+	scoreboard2.draw()
 
 	player1.draw()
 	player2.draw()

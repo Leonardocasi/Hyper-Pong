@@ -15,7 +15,7 @@ class Ball {
 		this.friction = 0.97
 		this.frictionTimer = 0
 
-		this.size = 28
+		this.size = 26
 		this.radius = this.size/2
 	}
 

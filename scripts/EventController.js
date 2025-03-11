@@ -44,6 +44,11 @@ function start() {
 
 	scoreboard1 = new Scoreboard(System.unscaledWidth/4)
 	scoreboard2 = new Scoreboard(System.unscaledWidth/4*3)
+
+	window.onload = function() {
+		scoreboard1.start()
+		scoreboard2.start()
+	}
 }
 
 

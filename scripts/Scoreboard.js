@@ -12,12 +12,20 @@ class Scoreboard {
 		// Valores del Sprite
 		this.numSprite = sprites.Numbers
 
-		this.widthNum = this.numSprite.naturalWidth / 11
-		this.heightNum = this.numSprite.naturalHeight
+		this.widthNum = 0
+		this.heightNum = 0
 
 		// Marcador
 		this.firstDigit = 0
 		this.secondDigit = 0
+	}
+
+
+
+	// Función de inicialización.
+	start() {
+		this.widthNum = this.numSprite.naturalWidth / 11
+		this.heightNum = this.numSprite.naturalHeight
 	}
 
 

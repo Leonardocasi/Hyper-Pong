@@ -46,26 +46,29 @@ class Player {
 		else if (this.position.y + height > System.unscaledHeight - Scene.density)
 			this.position.y = System.unscaledHeight - Scene.density - height
 
-		this.ballColition()
+		Balls.forEach(Ball => {
+			// Evaluación de colisión en el momento.
+			this.ballColition(Ball, Ball.position.x, Ball.position.y)
+			// Evaluación de colisión en el siguiente Frame. (En caso de Stutter).
+			this.ballColition(Ball, Ball.position.x + Ball.speed.x * System.DeltaTime, Ball.position.y + Ball.speed.y * System.DeltaTime)
+		})
 	}
 
 
 
 	// Detección de colición con la pelota.
-	ballColition() {
-		Balls.forEach(Ball => {
-			let closestX = Math.max(this.position.x, Math.min(Ball.position.x, this.position.x + width))
-			let closestY = Math.max(this.position.y, Math.min(Ball.position.y, this.position.y + height))
+	ballColition(Ball, BallPosX, BallPosY) {
+		let closestX = Math.max(this.position.x, Math.min(BallPosX, this.position.x + width))
+		let closestY = Math.max(this.position.y, Math.min(BallPosY, this.position.y + height))
 
-			let distanceX = Ball.position.x - closestX
-			let distanceY = Ball.position.y - closestY
+		let distanceX = BallPosX - closestX
+		let distanceY = BallPosY - closestY
 
-			let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
+		let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
 
-			if (distance <= Ball.radius) {
-				this.newAngle(Ball, closestX, closestY)
-			}
-		})
+		if (distance <= Ball.radius) {
+			this.newAngle(Ball, closestX, closestY)
+		}
 	}
 
 

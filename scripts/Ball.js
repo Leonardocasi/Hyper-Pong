@@ -12,7 +12,7 @@ class Ball {
 		this.velocity = 22				// Rapidez, valor escalar.
 		this.angle = angle				// ángulo en grados.
 
-		this.friction = 0.965
+		this.friction = 0.967
 		this.frictionTimer = 0
 
 		this.size = 26

@@ -83,12 +83,14 @@ class Player {
 
 		let NewAngle = 0
 
+		// Establecimiento del nuevo ángulo en base a la zona de colisión en el jugador.
 		if (closestX > this.position.x + width/2)
 			NewAngle = NewAngleRight[zone]
 		else if (closestX < this.position.x + width/2)
 			NewAngle = NewAngleLeft[zone]
 
-		Ball.angle = NewAngle
+		// Establecimiento del nuevo ángulo con un añadido aleatorio para evitar búcles infinitos.
+		Ball.angle = NewAngle + myMath.random(-5, 5)
 		Ball.speedCalculation()
 	}
 

@@ -16,7 +16,7 @@ class Player {
 		this.side = side
 		this.position = {x: 0, y: 0 }
 
-		this.speed = 10
+		this.speed = 12
 	}
 
 
@@ -45,12 +45,6 @@ class Player {
 			this.position.y += this.speed * System.DeltaTime
 		else if (this.position.y + height > System.unscaledHeight - Scene.density)
 			this.position.y = System.unscaledHeight - Scene.density - height
-
-
-		// Evaluación de colisión por cada pelota.
-		Balls.forEach(Ball => {
-			this.ballColition(Ball, Ball.position.x, Ball.position.y)
-		})
 	}
 
 
@@ -68,6 +62,8 @@ class Player {
 
 		// Corrección de trayectoria en caso de colisión.
 		if (distance <= Ball.radius) {
+			Ball.velocity++
+			console.log(Ball.velocity)
 			this.newAngle(Ball, closestX, closestY)
 			Ball.PlayerColition = true
 		}
@@ -77,8 +73,6 @@ class Player {
 
 	// Cambio de ángulo de la pelota.
 	newAngle(Ball, closestX, closestY) {
-		//Ball.speed.x *= -1
-
 		let hitY = closestY - this.position.y
 		let zone = Math.round(hitY/(height/5))
 		//console.log(zone)

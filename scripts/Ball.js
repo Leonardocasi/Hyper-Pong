@@ -9,7 +9,9 @@ class Ball {
 	constructor(x, y, angle) {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
-		this.velocity = 22				// Rapidez, valor escalar.
+
+		this.minVelocity = 20			// Valor inicial de velocidad.
+		this.velocity = 0				// Rapidez, valor escalar.
 		this.angle = angle				// ángulo en grados.
 
 		this.friction = 0.967
@@ -27,6 +29,9 @@ class Ball {
 
 	// Función para la iniciación
 	start() {
+		// Establecimiento de velocidad inicial.
+		this.velocity = this.minVelocity
+
 		// Obtención de las componentes de velocidad
 		this.speedCalculation()
 	}

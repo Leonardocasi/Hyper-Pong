@@ -74,68 +74,50 @@ function update() {
 
 
 
-	// Lógica del juego (dividirlo de esta forma me será util para pausar el juego)
+	// Lógica del juego (dividirlo de esta forma es útil para pausar el juego)
+	// Movimiento de los jugadores
+	if (GameMode != 3) {
+		player1.update(System.Key.Player1Up, System.Key.Player1Down)
+		player2.update(System.Key.Player2Up, System.Key.Player2Down)
+	}
+	
+	
+	
+	// Evaluaciones para todas las bolas dentro del juego
+	// (la mayoría solo funcionarán en caso de solo haber una xD)
 	Balls.forEach(Ball => {
 		// Modo Saque del jugador 1
 		if (GameMode == 0) {
-			Balls.forEach(Ball => {
-				Ball.position.x = player1.position.x + Players.width + Ball.radius
-				Ball.position.y = player1.position.y + Players.height/2
+			Ball.position.x = player1.position.x + Players.width + Ball.radius
+			Ball.position.y = player1.position.y + Players.height/2
 
-				if (System.Key.Player1Serve) {
-					GameMode = 2
-					Ball.angle = myMath.random(45, 315)
-				}
-			})
+			if (System.Key.Player1Serve) {
+				GameMode = 2
+				Ball.angle = myMath.random(45, 315)
+			}
 		}
 
 
 		// Modo saque del jugador 2
 		if (GameMode == 1) {
-			Balls.forEach(Ball => {
-				Ball.position.x = player2.position.x - Ball.radius
-				Ball.position.y = player2.position.y + Players.height/2
+			Ball.position.x = player2.position.x - Ball.radius
+			Ball.position.y = player2.position.y + Players.height/2
 
-				if (System.Key.Player2Serve) {
-					GameMode = 2
-					Ball.angle = myMath.random(135, 225)
-				}
-			})
+			if (System.Key.Player2Serve) {
+				GameMode = 2
+				Ball.angle = myMath.random(135, 225)
+			}
 		}
 		
 
 
 		// Modo Juego
 		if (GameMode == 2) {
-			// Detección de goles
-			// Colision lateral derecha (Gol del Jugador 1)
-			if (Math.round(System.unscaledWidth - Ball.position.x) < -Ball.radius) {
-				goalsPlayer1++
-				scoreboard1.update(goalsPlayer1)
-				GameMode = 1						// Reinicio de la pelota
-			}
+			// Verificación de colisiones.
+			player1.ballColition(Ball, Ball.position.x, Ball.position.y)
+			player2.ballColition(Ball, Ball.position.x, Ball.position.y)
 
-			// Colisión lateral izquierda
-			if (Math.round(Ball.position.x) < -Ball.radius) {
-				goalsPlayer2++
-				scoreboard2.update(goalsPlayer2)
-				GameMode = 0						// Reinicio de la pelota
-			}
-
-			Ball.update()
-		}
-	})
-
-
-
-	// Movimiento de los jugadores
-	if (GameMode != 3) {
-		player1.update(System.Key.Player1Up, System.Key.Player1Down)
-		player2.update(System.Key.Player2Up, System.Key.Player2Down)
-
-
-		// Verificación de bola fantasma.
-		Balls.forEach(Ball => {
+			// Verificación de bola fantasma. (Errores en la detección de colisiones debido a Stuttering)
 			// Jugador 1
 			if (Ball.position.x - Ball.radius <= player1.position.x + Players.width && !Ball.PlayerColition) {
 				if (
@@ -164,8 +146,32 @@ function update() {
 					player2.newAngle(Ball, Ball.position.x, Ball.position.y)
 				}
 			}
-		})
-	}
+
+
+
+			Ball.update()
+
+
+
+			// Detección de goles
+			// Colision lateral derecha (Gol del Jugador 1)
+			if (Math.round(System.unscaledWidth - Ball.position.x) < -Ball.radius) {
+				goalsPlayer1++
+				scoreboard1.update(goalsPlayer1)
+				Ball.velocity = Ball.minVelocity
+				GameMode = 1						// Reinicio de la pelota
+			}
+
+			// Colisión lateral izquierda (Gol del jugador 2)
+			if (Math.round(Ball.position.x) < -Ball.radius) {
+				goalsPlayer2++
+				scoreboard2.update(goalsPlayer2)
+				Ball.velocity = Ball.minVelocity
+				GameMode = 0						// Reinicio de la pelota
+			}
+		}
+	})
+
 
 
 

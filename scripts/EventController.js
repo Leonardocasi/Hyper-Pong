@@ -125,7 +125,8 @@ function update() {
 					Ball.past.x >= player1.position.x &&
 					Ball.position.x <= player1.position.x + Players.width &&
 					// Evaluaciones en Y (Solo se evalua si está dentro del rango la posicion actual de la bola)
-					Ball.position.y + Ball.radius >= player1.position.y && Ball.position.y - Ball.radius <= player1.position.y + Players.height
+					Ball.position.y + Ball.radius >= player1.position.y && 
+					Ball.position.y - Ball.radius <= player1.position.y + Players.height
 				) {
 					Ball.position.x = player1.position.x + Players.width + Ball.radius
 					player1.newAngle(Ball, Ball.position.x, Ball.position.y)
@@ -140,7 +141,8 @@ function update() {
 					Ball.position.x >= player2.position.x &&
 					Ball.past.x <= player2.position.x + Players.width &&
 					// Evaluaciones en Y (Solo se evalua si está dentro del rango la posicion actual de la bola)
-					Ball.position.y + Ball.radius >= player2.position.y && Ball.position.y - Ball.radius <= player2.position.y + Players.height
+					Ball.position.y >= player2.position.y && 
+					Ball.position.y <= player2.position.y + Players.height
 				) {
 					Ball.position.x = player2.position.x + Players.width + Ball.radius
 					player2.newAngle(Ball, Ball.position.x, Ball.position.y)

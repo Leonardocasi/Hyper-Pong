@@ -1,7 +1,8 @@
 import * as System from './main.js'
-import * as EventController from './EventController.js'
+//import * as EventController from './EventController.js'
 import * as myMath from './myMath.js'
 import * as Scene from './Scene.js'
+import { Particle } from './Particles.js'
 
 
 
@@ -23,6 +24,10 @@ class Ball {
 		this.past = { x: 0, y: 0 }
 
 		this.PlayerColition = false
+
+		this.particleTimer = 0
+
+		this.particles = []
 	}
 
 
@@ -79,13 +84,39 @@ class Ball {
 
 		// Reestablecimiento de la verificacion de colisión con el jugador.
 		this.PlayerColition = false
+
+
+		// Control de partículas
+		this.particleTimer += System.DeltaTime
+
+		if (this.particleTimer > 1) {
+			this.particles.push(
+				new Particle(this.position.x, this.position.y, '#0094FF', 'circle'),
+				new Particle(this.position.x, this.position.y, '#3075FF', 'circle')
+			)
+
+			this.particleTimer = 0
+		}
+
+		this.particles.map(particle => particle.update())
 	}
 
 
 
 	// Función de dibujado de la pelota.
 	draw() {
-		// Dibujo
+		// Dibujo de las partículas
+		this.particles.map((particle, index) => {
+			if (particle.opacity <= 0) {
+				this.particles.splice(index, 1)
+			} else {
+				particle.draw()
+			}
+		})
+
+
+
+		// Dibujo de la pelota
 		System.ctx.beginPath()
 		System.ctx.arc(
 			myMath.redondeo(this.position.x * System.scale, 1),

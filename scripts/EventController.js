@@ -159,6 +159,7 @@ function update() {
 				goalsPlayer1++
 				scoreboard1.update(goalsPlayer1)
 				Ball.velocity = Ball.minVelocity
+				Ball.particles = []
 				GameMode = 1						// Reinicio de la pelota
 			}
 
@@ -167,6 +168,7 @@ function update() {
 				goalsPlayer2++
 				scoreboard2.update(goalsPlayer2)
 				Ball.velocity = Ball.minVelocity
+				Ball.particles = []
 				GameMode = 0						// Reinicio de la pelota
 			}
 		}

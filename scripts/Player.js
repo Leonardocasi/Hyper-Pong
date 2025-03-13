@@ -63,7 +63,6 @@ class Player {
 		// Corrección de trayectoria en caso de colisión.
 		if (distance <= Ball.radius) {
 			Ball.velocity++
-			console.log(Ball.velocity)
 			this.newAngle(Ball, closestX, closestY)
 			Ball.PlayerColition = true
 		}

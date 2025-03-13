@@ -70,7 +70,7 @@ function update() {
 	if (!System.Key.Enter && !System.Key.Esc) {
 		PauseKey = 0
 	}
-	
+
 
 
 
@@ -127,10 +127,44 @@ function update() {
 	})
 
 
+
 	// Movimiento de los jugadores
 	if (GameMode != 3) {
 		player1.update(System.Key.Player1Up, System.Key.Player1Down)
 		player2.update(System.Key.Player2Up, System.Key.Player2Down)
+
+
+		// Verificación de bola fantasma.
+		Balls.forEach(Ball => {
+			// Jugador 1
+			if (Ball.position.x - Ball.radius <= player1.position.x + Players.width && !Ball.PlayerColition) {
+				if (
+					// Evaluaciones en X
+					Ball.past.x >= player1.position.x &&
+					Ball.position.x <= player1.position.x + Players.width &&
+					// Evaluaciones en Y (Solo se evalua si está dentro del rango la posicion actual de la bola)
+					Ball.position.y + Ball.radius >= player1.position.y && Ball.position.y - Ball.radius <= player1.position.y + Players.height
+				) {
+					Ball.position.x = player1.position.x + Players.width + Ball.radius
+					player1.newAngle(Ball, Ball.position.x, Ball.position.y)
+				}
+			}
+
+
+			// Jugador 2
+			if (Ball.position.x + Ball.radius <= player2.position.x && !Ball.PlayerColition) {
+				if (
+					// Evaluaciones en X
+					Ball.position.x >= player2.position.x &&
+					Ball.past.x <= player2.position.x + Players.width &&
+					// Evaluaciones en Y (Solo se evalua si está dentro del rango la posicion actual de la bola)
+					Ball.position.y + Ball.radius >= player2.position.y && Ball.position.y - Ball.radius <= player2.position.y + Players.height
+				) {
+					Ball.position.x = player2.position.x + Players.width + Ball.radius
+					player2.newAngle(Ball, Ball.position.x, Ball.position.y)
+				}
+			}
+		})
 	}
 
 

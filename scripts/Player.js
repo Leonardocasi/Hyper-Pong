@@ -46,11 +46,10 @@ class Player {
 		else if (this.position.y + height > System.unscaledHeight - Scene.density)
 			this.position.y = System.unscaledHeight - Scene.density - height
 
+
+		// Evaluación de colisión por cada pelota.
 		Balls.forEach(Ball => {
-			// Evaluación de colisión en el momento.
 			this.ballColition(Ball, Ball.position.x, Ball.position.y)
-			// Evaluación de colisión en el siguiente Frame. (En caso de Stutter).
-			this.ballColition(Ball, Ball.position.x + Ball.speed.x * System.DeltaTime, Ball.position.y + Ball.speed.y * System.DeltaTime)
 		})
 	}
 
@@ -66,8 +65,11 @@ class Player {
 
 		let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
 
+
+		// Corrección de trayectoria en caso de colisión.
 		if (distance <= Ball.radius) {
 			this.newAngle(Ball, closestX, closestY)
+			Ball.PlayerColition = true
 		}
 	}
 

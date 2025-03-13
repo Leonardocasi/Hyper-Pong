@@ -17,6 +17,10 @@ class Ball {
 
 		this.size = 26
 		this.radius = this.size/2
+
+		this.past = { x: 0, y: 0 }
+
+		this.PlayerColition = false
 	}
 
 
@@ -56,11 +60,20 @@ class Ball {
 		}
 
 
+		// Almacenamiento de la posición anterior.
+		this.past.x = this.position.x
+		this.past.y = this.position.y
+
+
 		// Actualización de la posición de la pelota
 		this.position.x += this.speed.x * System.DeltaTime
 		this.position.y += this.speed.y * System.DeltaTime
 
 		this.frictionTimer += System.DeltaTime
+
+
+		// Reestablecimiento de la verificacion de colisión con el jugador.
+		this.PlayerColition = false
 	}
 
 

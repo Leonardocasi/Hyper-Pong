@@ -38,10 +38,12 @@ const Key = {
 	Player1Up:		false,
 	Player1Down:	false,
 	Player1Serve:	false,
+	Player1Power:	false,
 	
 	Player2Up:		false,
 	Player2Down:	false,
 	Player2Serve:	false,
+	Player2Power:	false,
 
 	Esc:			false,
 	Enter:			false,
@@ -115,11 +117,13 @@ function commuteKey(keyCode, State) {
 		case 87:	Key.Player1Up = State;		break
 		case 83:	Key.Player1Down = State;	break
 		case 68:	Key.Player1Serve = State;	break
+		case 65:	Key.Player1Power = State;	break
 
 		// Movimiento del jugador 2.
 		case 38:	Key.Player2Up = State;		break
 		case 40:	Key.Player2Down = State;	break
 		case 37:	Key.Player2Serve = State;	break
+		case 39:	Key.Player2Power = State;	break
 
 		// Adicionales importantes.
 		case 27:	Key.Esc = State;			break

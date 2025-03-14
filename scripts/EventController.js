@@ -77,8 +77,8 @@ function update() {
 	// Lógica del juego (dividirlo de esta forma es útil para pausar el juego)
 	// Movimiento de los jugadores
 	if (GameMode != 3) {
-		player1.update(System.Key.Player1Up, System.Key.Player1Down)
-		player2.update(System.Key.Player2Up, System.Key.Player2Down)
+		player1.update(System.Key.Player1Up, System.Key.Player1Down, System.Key.Player1Power)
+		player2.update(System.Key.Player2Up, System.Key.Player2Down, System.Key.Player2Power)
 	}
 	
 	
@@ -88,24 +88,34 @@ function update() {
 	Balls.forEach(Ball => {
 		// Modo Saque del jugador 1
 		if (GameMode == 0) {
-			Ball.position.x = player1.position.x + Players.width + Ball.radius
+			Ball.position.x = player1.position.x + Players.width + Ball.radius + 2
 			Ball.position.y = player1.position.y + Players.height/2
 
 			if (System.Key.Player1Serve) {
+				Ball.angle = (myMath.random(0,1)) ? myMath.random(10, 45) : myMath.random(315, 350)
+				Ball.start()
+				if (player1.powerUp) {
+					Ball.extraSpeed = true
+					Ball.speedCalculation(Ball.velocity + 8)
+				} else Ball.extraSpeed = false
 				GameMode = 2
-				Ball.angle = myMath.random(45, 315)
 			}
 		}
 
 
 		// Modo saque del jugador 2
 		if (GameMode == 1) {
-			Ball.position.x = player2.position.x - Ball.radius
+			Ball.position.x = player2.position.x - Ball.radius - 2
 			Ball.position.y = player2.position.y + Players.height/2
 
 			if (System.Key.Player2Serve) {
+				Ball.angle = (myMath.random(0,1)) ? myMath.random(135, 170) : myMath.random(190, 225)
+				Ball.start()
+				if (player2.powerUp) {
+					Ball.extraSpeed = true
+					Ball.speedCalculation(Ball.velocity + 8)
+				} else Ball.extraSpeed = false
 				GameMode = 2
-				Ball.angle = myMath.random(135, 225)
 			}
 		}
 		
@@ -152,20 +162,18 @@ function update() {
 			// Detección de goles
 			// Colision lateral derecha (Gol del Jugador 1)
 			if (Math.floor(Ball.position.x) > System.unscaledWidth + Ball.radius + 30) {
+				GameMode = 1						// Reinicio de la pelota
 				goalsPlayer1++
 				scoreboard1.update(goalsPlayer1)
-				Ball.velocity = Ball.minVelocity
 				Ball.particles = []
-				GameMode = 1						// Reinicio de la pelota
 			}
 			
 			// Colisión lateral izquierda (Gol del jugador 2)
 			if (Math.floor(Ball.position.x) < -Ball.radius - 30) {
+				GameMode = 0						// Reinicio de la pelota
 				goalsPlayer2++
 				scoreboard2.update(goalsPlayer2)
-				Ball.velocity = Ball.minVelocity
 				Ball.particles = []
-				GameMode = 0						// Reinicio de la pelota
 			}
 
 

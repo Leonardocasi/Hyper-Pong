@@ -9,7 +9,7 @@ class Particle {
 		this.speed = { x: myMath.random(-25, 25)/10, y: myMath.random(-25, 25)/10 }
 
 		this.opacity = 1
-		this.color = color || '#ffffff'
+		this.color = color
 		this.shape = shape
 		this.radius = myMath.random(6, 14)
 	}

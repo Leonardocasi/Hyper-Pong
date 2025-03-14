@@ -27,6 +27,7 @@ class Ball {
 		this.particleTimer = 0
 
 		this.particles = []
+		this.extraSpeed = false
 	}
 
 
@@ -37,7 +38,7 @@ class Ball {
 		this.velocity = this.minVelocity
 
 		// Obtención de las componentes de velocidad
-		this.speedCalculation()
+		this.speedCalculation(this.velocity)
 	}
 
 
@@ -89,10 +90,14 @@ class Ball {
 		this.particleTimer += System.DeltaTime
 
 		if (this.particleTimer > 1) {
-			this.particles.push(
-				new Particle(this.position.x, this.position.y, '#0094FF', 'circle'),
-				new Particle(this.position.x, this.position.y, '#3075FF', 'circle')
-			)
+			if (this.extraSpeed)	this.particles.push(
+					new Particle(this.position.x, this.position.y, '#0094FF', 'circle'),
+					new Particle(this.position.x, this.position.y, '#3075FF', 'circle')
+				)
+			else this.particles.push(
+					new Particle(this.position.x, this.position.y, '#FF1414', 'circle'),
+					new Particle(this.position.x, this.position.y, '#FF5F32', 'circle')
+				)
 
 			this.particleTimer = 0
 		}
@@ -133,9 +138,9 @@ class Ball {
 
 
 	// Función para calcular las componentes verticales y horizontales de la velocidad.
-	speedCalculation() {
-		let x = myMath.redondeo(this.velocity * myMath.degCos(this.angle), 4)
-		let y = myMath.redondeo(this.velocity * myMath.degSin(this.angle), 4)
+	speedCalculation(velocity) {
+		let x = myMath.redondeo(velocity * myMath.degCos(this.angle), 4)
+		let y = myMath.redondeo(velocity * myMath.degSin(this.angle), 4)
 		this.speed = { x, y }
 	}
 

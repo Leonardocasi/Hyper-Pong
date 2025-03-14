@@ -5,7 +5,7 @@ import * as myMath from './myMath.js'
 
 
 // Variables para el jugador.
-const width = 20
+const width = 24
 const height = 100
 
 
@@ -17,7 +17,13 @@ class Player {
 
 		this.speed = 12
 
+		// Variables de poderes.
+		this.chargeMargin = 4
 		this.charge = 0
+		this.maxCharge = 1800
+		this.powerUp = false
+
+		this.chargeSection = (height - 2*this.chargeMargin)/this.maxCharge
 	}
 
 
@@ -36,7 +42,7 @@ class Player {
 
 
 	// Función de actualización del jugador.
-	update(Up, Down) {
+	update(Up, Down, Power) {
 		if (Up && this.position.y > Scene.density)		
 			this.position.y -= this.speed * System.DeltaTime
 		else if (this.position.y < Scene.density)
@@ -46,6 +52,22 @@ class Player {
 			this.position.y += this.speed * System.DeltaTime
 		else if (this.position.y + height > System.unscaledHeight - Scene.density)
 			this.position.y = System.unscaledHeight - Scene.density - height
+
+
+		// Activación del poder
+		if (Power && this.charge >= this.maxCharge && !this.powerUp) {
+			this.powerUp = true
+			this.speed += 4
+		}
+
+
+		// Revocamiento de poder
+		if (this.powerUp)	this.charge -= System.DeltaTime
+		if (this.powerUp && this.charge <= 0) {
+			this.charge = 0
+			this.powerUp = false
+			this.speed -= 4
+		}
 	}
 
 
@@ -63,7 +85,6 @@ class Player {
 
 		// Corrección de trayectoria en caso de colisión.
 		if (distance <= Ball.radius) {
-			Ball.velocity++
 			this.newAngle(Ball, closestX, closestY)
 			Ball.PlayerColition = true
 		}
@@ -73,6 +94,13 @@ class Player {
 
 	// Cambio de ángulo de la pelota.
 	newAngle(Ball, closestX, closestY) {
+		// Aumento de velocidad por colisión.
+		Ball.velocity++
+
+		// Aumento de carga del jugador.
+		if (this.charge < this.maxCharge && !this.powerUp) this.charge += 60
+
+
 		let hitY = closestY - this.position.y
 		let zone = Math.round(hitY/(height/5))
 		//console.log(zone)
@@ -90,7 +118,8 @@ class Player {
 
 		// Establecimiento del nuevo ángulo con un añadido aleatorio para evitar búcles infinitos.
 		Ball.angle = NewAngle + myMath.random(-5, 5)
-		Ball.speedCalculation()
+		Ball.extraSpeed = this.powerUp ? true : false
+		Ball.speedCalculation( this.powerUp ? Ball.velocity + 8 : Ball.velocity )
 	}
 
 
@@ -109,7 +138,20 @@ class Player {
 		// Contenedor de carga.
 		System.ctx.fillStyle = "#101010"
 		System.ctx.fillRect(
-			0,0,0,0
+			(this.position.x + this.chargeMargin) * System.scale,
+			(this.position.y + this.chargeMargin) * System.scale,
+			(width - 2 * this.chargeMargin) * System.scale,
+			(height - 2 * this.chargeMargin) * System.scale
+		)
+
+		// Nivel de carga.
+		if (!this.powerUp) System.ctx.fillStyle = this.charge >= this.maxCharge ? "#FFD800" : "#FF6A00"
+		else System.ctx.fillStyle = "#00FFFF"
+		System.ctx.fillRect(
+			(this.position.x + this.chargeMargin) * System.scale,
+			(this.position.y + this.chargeMargin + height - 2 * this.chargeMargin - this.charge * this.chargeSection) * System.scale,
+			(width - 2 * this.chargeMargin) * System.scale,
+			(this.charge * this.chargeSection) * System.scale
 		)
 	}
 }

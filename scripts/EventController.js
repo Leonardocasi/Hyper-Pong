@@ -151,7 +151,7 @@ function update() {
 			
 			// Detección de goles
 			// Colision lateral derecha (Gol del Jugador 1)
-			if (Math.round(System.unscaledWidth - Ball.position.x) < Ball.radius + 30) {
+			if (Math.floor(Ball.position.x) > System.unscaledWidth + Ball.radius + 30) {
 				goalsPlayer1++
 				scoreboard1.update(goalsPlayer1)
 				Ball.velocity = Ball.minVelocity
@@ -160,7 +160,7 @@ function update() {
 			}
 			
 			// Colisión lateral izquierda (Gol del jugador 2)
-			if (Math.round(Ball.position.x) < -Ball.radius - 30) {
+			if (Math.floor(Ball.position.x) < -Ball.radius - 30) {
 				goalsPlayer2++
 				scoreboard2.update(goalsPlayer2)
 				Ball.velocity = Ball.minVelocity

@@ -1,7 +1,6 @@
 import * as System from './main.js'
 import * as Scene from './Scene.js'
 import * as myMath from './myMath.js'
-import {Balls} from './EventController.js'
 
 
 
@@ -17,6 +16,8 @@ class Player {
 		this.position = {x: 0, y: 0 }
 
 		this.speed = 12
+
+		this.charge = 0
 	}
 
 
@@ -96,12 +97,19 @@ class Player {
 
 	// Función de dibujado para el jugador.
 	draw() {
+		// Base del jugador.
 		System.ctx.fillStyle = "#fff"
 		System.ctx.fillRect(
-			myMath.redondeo(this.position.x * System.scale, 1),
-			myMath.redondeo(this.position.y * System.scale, 1),
-			myMath.redondeo(width * System.scale, 1),
-			myMath.redondeo(height * System.scale, 1)
+			this.position.x * System.scale,
+			this.position.y * System.scale,
+			width * System.scale,
+			height * System.scale
+		)
+
+		// Contenedor de carga.
+		System.ctx.fillStyle = "#101010"
+		System.ctx.fillRect(
+			0,0,0,0
 		)
 	}
 }

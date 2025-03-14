@@ -11,7 +11,7 @@ class Particle {
 		this.opacity = 1
 		this.color = color || '#ffffff'
 		this.shape = shape
-		this.radius = myMath.random(4, 10)
+		this.radius = myMath.random(6, 14)
 	}
 
 
@@ -29,7 +29,7 @@ class Particle {
 		System.ctx.globalAlpha = this.opacity
 		System.ctx.fillStyle = this.opacity <= 0 ? 'transparent' : this.color
 		System.ctx.beginPath()
-		System.ctx.arc(this.position.x * System.scale, this.position.y * System.scale, this.radius, 0, 6.2832)
+		System.ctx.arc(this.position.x * System.scale, this.position.y * System.scale, this.radius * System.scale, 0, 6.2832)
 		System.ctx.fill()
 		System.ctx.closePath()
 		System.ctx.restore()

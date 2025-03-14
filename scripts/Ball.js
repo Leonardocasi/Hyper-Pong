@@ -1,5 +1,4 @@
 import * as System from './main.js'
-//import * as EventController from './EventController.js'
 import * as myMath from './myMath.js'
 import * as Scene from './Scene.js'
 import { Particle } from './Particles.js'
@@ -119,9 +118,9 @@ class Ball {
 		// Dibujo de la pelota
 		System.ctx.beginPath()
 		System.ctx.arc(
-			myMath.redondeo(this.position.x * System.scale, 1),
-			myMath.redondeo(this.position.y * System.scale, 1),
-			myMath.redondeo(this.radius * System.scale, 1),
+			this.position.x * System.scale,
+			this.position.y * System.scale,
+			this.radius * System.scale,
 			0,		// Angulo de inicio
 			6.2832,	// Angulo final (Ambos en radianes)
 			false

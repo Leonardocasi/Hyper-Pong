@@ -99,7 +99,8 @@ function newRes() {
 // Detección del presionado de una tecla.
 addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
-	//console.log(keyCode)
+	// Ocultar el mouse tras presionar una tecla.
+	document.body.style.cursor = 'none';
 })
 
 // Detección del alza de una tecla.
@@ -107,6 +108,9 @@ addEventListener('keyup', ({keyCode}) => {
 	commuteKey(keyCode, false)
 })
 
+
+// Mostrar el mouse tras moverlo.
+document.onmousemove = function() { document.body.style.cursor = 'auto'; }
 
 
 // Función de alternación para Keys

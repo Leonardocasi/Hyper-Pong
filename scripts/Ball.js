@@ -1,7 +1,7 @@
 import * as System from './main.js'
 import * as myMath from './myMath.js'
 import * as Scene from './Scene.js'
-import { Particle } from './Particles.js'
+import { Particle } from './Particle.js'
 
 
 
@@ -10,17 +10,17 @@ class Ball {
 		this.position = { x, y }
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 
-		this.minVelocity = 20			// Valor inicial de velocidad.
+		this.minVelocity = 17			// Valor inicial de velocidad.
 		this.velocity = 0				// Rapidez, valor escalar.
 		this.angle = angle				// ángulo en grados.
 
 		this.friction = 0.967
 		this.frictionTimer = 0
 
-		this.size = 26
+		this.size = 24
 		this.radius = this.size/2
 
-		this.past = { x: 0, y: 0 }
+		this.past = { x: 0, y: 0 }		// Coordenadas anteriores
 
 		this.PlayerColition = false
 
@@ -45,6 +45,7 @@ class Ball {
 
 	// Función de actualización de la pelota.
 	update() {
+		// Colisiones en el escenario.
 		// Colisión Superior
 		if (Math.round(this.position.y) <= Math.round(this.radius + Scene.density)) {
 			this.position.y = this.radius + Scene.density
@@ -58,7 +59,6 @@ class Ball {
 			this.speed.y *= -1
 			this.getNewAngle()
 		}
-
 
 
 		// Fricción
@@ -117,7 +117,6 @@ class Ball {
 				particle.draw()
 			}
 		})
-
 
 
 		// Dibujo de la pelota

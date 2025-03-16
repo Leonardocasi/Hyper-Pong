@@ -1,12 +1,15 @@
 import * as System from './main.js'
 import * as Scene from './Scene.js'
 import * as myMath from './myMath.js'
+import * as EventController from './EventController.js'
+import { Orb } from './Orb.js'
 
 
 
 // Variables para el jugador.
 const width = 24
 const height = 100
+let Orbs = []
 
 
 
@@ -19,7 +22,7 @@ class Player {
 
 		// Variables de poderes.
 		this.chargeMargin = 4
-		this.charge = 0
+		this.charge = 1800
 		this.maxCharge = 1800
 		this.powerUp = false
 
@@ -58,6 +61,7 @@ class Player {
 		if (Power && this.charge >= this.maxCharge && !this.powerUp) {
 			this.powerUp = true
 			this.speed += 4
+			Orbs.push(new Orb(this.position.x))
 		}
 
 
@@ -68,6 +72,23 @@ class Player {
 			this.powerUp = false
 			this.speed -= 4
 		}
+
+
+		// Orbe de poder.
+		Orbs.map((Orb, index) => {
+			Orb.update()
+
+
+			// Revisión de colisión con Orbe
+			if (Orb.position.x + Orb.radius >= this.position.x &&
+				Orb.position.x - Orb.radius <= this.position.x + width &&
+				Orb.position.y - Orb.radius <= this.position.y + height &&
+				Orb.position.y + Orb.radius >= this.position.y) {
+				Orbs.splice(index, 1)
+				EventController.newBalls()
+
+			}
+		})
 	}
 
 
@@ -126,6 +147,13 @@ class Player {
 
 	// Función de dibujado para el jugador.
 	draw() {
+		// Dibujo del orbe de poder.
+		Orbs.map(Orb => {
+			Orb.draw()
+		})
+
+
+
 		// Base del jugador.
 		System.ctx.fillStyle = "#fff"
 		System.ctx.fillRect(
@@ -135,6 +163,7 @@ class Player {
 			height * System.scale
 		)
 
+
 		// Contenedor de carga.
 		System.ctx.fillStyle = "#101010"
 		System.ctx.fillRect(
@@ -143,6 +172,7 @@ class Player {
 			(width - 2 * this.chargeMargin) * System.scale,
 			(height - 2 * this.chargeMargin) * System.scale
 		)
+
 
 		// Nivel de carga.
 		if (!this.powerUp) System.ctx.fillStyle = this.charge >= this.maxCharge ? "#FFD800" : "#FF6A00"

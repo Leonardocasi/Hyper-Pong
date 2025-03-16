@@ -29,7 +29,13 @@ class Particle {
 		System.ctx.globalAlpha = this.opacity
 		System.ctx.fillStyle = this.opacity <= 0 ? 'transparent' : this.color
 		System.ctx.beginPath()
-		System.ctx.arc(this.position.x * System.scale, this.position.y * System.scale, this.radius * System.scale, 0, 6.2832)
+		System.ctx.arc(
+			this.position.x * System.scale,
+			this.position.y * System.scale,
+			this.radius * System.scale,
+			0, 6.2832,
+			false
+		)
 		System.ctx.fill()
 		System.ctx.closePath()
 		System.ctx.restore()

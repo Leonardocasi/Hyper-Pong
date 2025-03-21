@@ -9,6 +9,9 @@ class Scoreboard {
 		this.width = 56
 		this.height = 102
 
+		this.halfWidth = this.width/2
+		this.halfHeight = this.height/2
+
 		// Valores del Sprite
 		this.numSprite = sprites.Numbers
 
@@ -18,6 +21,13 @@ class Scoreboard {
 		// Marcador
 		this.firstDigit = 0
 		this.secondDigit = 0
+
+		// Valores para PowerSlot
+		this.power = -1
+		this.powerSprite
+		this.powerPosition = { x: 0, y: 0}
+		this.radius = 40
+		this.lineWidth = 6
 	}
 
 
@@ -26,6 +36,10 @@ class Scoreboard {
 	start() {
 		this.widthNum = this.numSprite.naturalWidth / 11
 		this.heightNum = this.numSprite.naturalHeight
+
+		if (this.position.x < System.halfWidth) 
+			this.powerPosition.x = this.position.x - this.width - this.radius - this.lineWidth*2
+		else this.powerPosition.x = this.position.x + this.width + this.radius + this.lineWidth*2
 	}
 
 
@@ -66,6 +80,36 @@ class Scoreboard {
 			this.position.x * System.scale, this.position.y * System.scale,	// Coordenadas.
 			this.width * System.scale, this.height * System.scale							// Ancho y alto.
 		)
+
+
+		// Poder en caso de haber.
+		if (this.power != -1)
+			System.ctx.drawImage(
+				// Sprite.
+				this.powerSprite,
+
+				// Coordenadas.
+				(this.powerPosition.x - this.radius) * System.scale,
+				(this.position.y + this.halfHeight - this.radius) * System.scale,
+
+				// Ancho y alto.
+				this.radius*2 * System.scale, this.radius*2 * System.scale
+			)
+
+		// Power Slot
+		System.ctx.beginPath()
+		System.ctx.arc(
+			this.powerPosition.x * System.scale,
+			(this.position.y + this.halfHeight) * System.scale,
+			/*this.radius*/ 40 * System.scale,
+			0,		// Angulo de inicio
+			6.2832,	// Angulo final (Ambos en radianes)
+			false
+		)
+		System.ctx.strokeStyle = "#888"
+		System.ctx.lineWidth = this.lineWidth * System.scale
+		System.ctx.stroke()
+		System.ctx.closePath()
 	}
 }
 

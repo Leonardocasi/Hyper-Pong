@@ -1,4 +1,5 @@
 import * as System from './main.js'
+import * as sprites from './Sprites.js'
 import * as scene from './Scene.js'
 import * as myMath from './myMath.js'
 import * as Players from './Player.js'
@@ -20,6 +21,10 @@ let GameMode = 0		// 0: Saque de jugador 1,
 						// 3: Pausa
 
 let PauseKey = 0
+
+// Esto evita que se active el poder durante un saque.
+let controlServe1 = false
+let controlServe2 = false
 
 let scoreboard1
 let scoreboard2
@@ -91,6 +96,7 @@ function update() {
 			Ball.position.y = player1.position.y + Players.height/2
 
 			if (System.Key.Player1Serve) {
+				controlServe1 = true
 				Ball.angle = (myMath.random(0,1)) ? myMath.random(10, 45) : myMath.random(315, 350)
 				Ball.start()
 				if (player1.powerUp) {
@@ -108,6 +114,7 @@ function update() {
 			Ball.position.y = player2.position.y + Players.height/2
 
 			if (System.Key.Player2Serve) {
+				controlServe2 = true
 				Ball.angle = (myMath.random(0,1)) ? myMath.random(135, 170) : myMath.random(190, 225)
 				Ball.start()
 				if (player2.powerUp) {
@@ -122,6 +129,22 @@ function update() {
 
 		// Revisión de colisiones para todas las pelotas del juego.
 		if (GameMode == 2) {
+			// Activación de poderes.
+			//	Jugador 1
+			if (System.Key.Player1Serve && scoreboard1.power != -1 && !controlServe1) {
+				controlServe1 = true
+				newBalls(1)
+				scoreboard1.power = -1
+			}
+
+			//	Jugador 2
+			if (System.Key.Player2Serve && scoreboard2.power != -1 && !controlServe2) {
+				controlServe2 = true
+				newBalls(2)
+				scoreboard2.power = -1
+			}
+
+
 			// Verificación de colisiones.
 			player1.ballColition(Ball, Ball.position.x, Ball.position.y)
 			player2.ballColition(Ball, Ball.position.x, Ball.position.y)
@@ -206,6 +229,13 @@ function update() {
 
 
 
+	// Reestablecimiento del control de las teclas de servicio.
+	if (!System.Key.Player1Serve) controlServe1 = false
+	if (!System.Key.Player2Serve) controlServe2 = false
+
+
+
+
 	// Llamadas de dibujado
 	scene.draw()
 
@@ -223,13 +253,39 @@ function update() {
 
 
 // Función para el poder de las multiples pelotas.
-function newBalls() {
+function newBalls(player) {
 	let BallIndex = myMath.random(0, Balls.length - 1)
 	let Length = Balls.length
 
 	for (let i = 0; i < 10; i++) {
-		Balls.push( new Ball(Balls[BallIndex].position.x, Balls[BallIndex].position.y, (myMath.random(0,100) <= 50) ? myMath.random(135, 170) : myMath.random(190, 225) ) )
+		Balls.push( 
+			new Ball(
+				// Coordenadas.
+				Balls[BallIndex].position.x, Balls[BallIndex].position.y, 
+				
+				// Ángulos.
+				player == 1
+				? (myMath.random(0,100) <= 50) ? myMath.random(10, 45) : myMath.random(315, 350)
+				: (myMath.random(0,100) <= 50) ? myMath.random(135, 170) : myMath.random(190, 225)
+			)
+		)
 		Balls[Length + i].start()
+	}
+}
+
+
+
+// Función para asignar un poder a un jugador.
+function newPower(player) {
+	switch(player) {
+		case 1:
+			scoreboard1.power = 0
+			scoreboard1.powerSprite = sprites.Power[0]
+			break
+		case 2:
+			scoreboard2.power = 0
+			scoreboard2.powerSprite = sprites.Power[0]
+			break
 	}
 }
 
@@ -240,6 +296,7 @@ export {
 	start,
 	update,
 	newBalls,
+	newPower,
 
 
 	// Cosas que no son funciones xD

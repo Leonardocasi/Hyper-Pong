@@ -22,7 +22,7 @@ class Player {
 
 		// Variables de poderes.
 		this.chargeMargin = 4
-		this.charge = 1800
+		this.charge = 0
 		this.maxCharge = 1800
 		this.powerUp = false
 
@@ -85,8 +85,7 @@ class Player {
 				Orb.position.y - Orb.radius <= this.position.y + height &&
 				Orb.position.y + Orb.radius >= this.position.y) {
 				Orbs.splice(index, 1)
-				EventController.newBalls()
-
+				EventController.newPower(this.position.x < System.halfWidth ? 1 : 2)
 			}
 		})
 	}

@@ -1,6 +1,5 @@
 import * as System from './main.js'
-import * as Scene from './Scene.js'
-import * as myMath from './myMath.js'
+import * as scene from './scene.js'
 import * as EventController from './EventController.js'
 import { Orb } from './Orb.js'
 
@@ -46,15 +45,15 @@ class Player {
 
 	// Función de actualización del jugador.
 	update(Up, Down, Power) {
-		if (Up && this.position.y > Scene.density)		
+		if (Up && this.position.y > scene.density)		
 			this.position.y -= this.speed * System.DeltaTime
-		else if (this.position.y < Scene.density)
-			this.position.y = Scene.density
+		else if (this.position.y < scene.density)
+			this.position.y = scene.density
 
-		if (Down && this.position.y + height < System.unscaledHeight - Scene.density)	
+		if (Down && this.position.y + height < System.unscaledHeight - scene.density)	
 			this.position.y += this.speed * System.DeltaTime
-		else if (this.position.y + height > System.unscaledHeight - Scene.density)
-			this.position.y = System.unscaledHeight - Scene.density - height
+		else if (this.position.y + height > System.unscaledHeight - scene.density)
+			this.position.y = System.unscaledHeight - scene.density - height
 
 
 		// Activación del poder

@@ -1,7 +1,7 @@
 import * as System from './main.js'
 import * as sprites from './Sprites.js'
 import * as audio from './audio.js'
-import * as scene from './Scene.js'
+import * as scene from './scene.js'
 import * as myMath from './myMath.js'
 import * as Players from './Player.js'
 import { Ball } from './Ball.js'

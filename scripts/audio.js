@@ -1,7 +1,11 @@
 // Archivos de audio.
 
+// Efectos de sonido.
 const sceneHit = new Audio('audio/sceneHit.wav')
 const paddleHit = new Audio('audio/paddleHit.wav')
+
+// Música de fondo
+const background = new Audio()
 
 
 

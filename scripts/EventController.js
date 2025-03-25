@@ -1,5 +1,6 @@
 import * as System from './main.js'
 import * as sprites from './Sprites.js'
+import * as audio from './audio.js'
 import * as scene from './Scene.js'
 import * as myMath from './myMath.js'
 import * as Players from './Player.js'
@@ -19,6 +20,7 @@ let GameMode = 0		// 0: Saque de jugador 1,
 						// 1: Saque de jugador 2, 
 						// 2: Juego, 
 						// 3: Pausa
+						// 4: Menú (Valió verga)
 
 let PauseKey = 0
 
@@ -46,8 +48,8 @@ function start() {
 	player1.start()
 	player2.start()
 
-	scoreboard1 = new Scoreboard(System.unscaledWidth/4)
-	scoreboard2 = new Scoreboard(System.unscaledWidth/4*3)
+	scoreboard1 = new Scoreboard(System.unscaledWidth/6*2)
+	scoreboard2 = new Scoreboard(System.unscaledWidth/6*4)
 
 	window.onload = function() {
 		scoreboard1.start()

@@ -1,4 +1,5 @@
 import * as System from './main.js'
+import * as audio from './audio.js'
 import * as myMath from './myMath.js'
 import * as Scene from './Scene.js'
 import { Particle } from './Particle.js'
@@ -51,6 +52,7 @@ class Ball {
 			this.position.y = this.radius + Scene.density
 			this.speed.y *= -1
 			this.getNewAngle()
+			audio.play(audio.sceneHit)
 		}
 
 		// Colisión inferior
@@ -58,6 +60,7 @@ class Ball {
 			this.position.y = System.unscaledHeight - this.radius - Scene.density
 			this.speed.y *= -1
 			this.getNewAngle()
+			audio.play(audio.sceneHit)
 		}
 
 

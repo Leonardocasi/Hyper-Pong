@@ -1,7 +1,5 @@
 import * as System from './main.js'
-import * as audio from './audio.js'
 import * as myMath from './myMath.js'
-import * as Scene from './Scene.js'
 import { Particle } from './Particle.js'
 
 
@@ -46,24 +44,6 @@ class Ball {
 
 	// Función de actualización de la pelota.
 	update() {
-		// Colisiones en el escenario.
-		// Colisión Superior
-		if (Math.round(this.position.y) <= Math.round(this.radius + Scene.density)) {
-			this.position.y = this.radius + Scene.density
-			this.speed.y *= -1
-			this.getNewAngle()
-			audio.play(audio.sceneHit)
-		}
-
-		// Colisión inferior
-		if (Math.round(System.unscaledHeight - this.position.y) <= Math.round(this.radius + Scene.density)) {
-			this.position.y = System.unscaledHeight - this.radius - Scene.density
-			this.speed.y *= -1
-			this.getNewAngle()
-			audio.play(audio.sceneHit)
-		}
-
-
 		// Fricción
 		if (this.frictionTimer >= 5) {
 			this.speed.x *= this.friction

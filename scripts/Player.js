@@ -92,58 +92,6 @@ class Player {
 
 
 
-	// Detección de colición con la pelota.
-	ballColition(Ball, BallPosX, BallPosY) {
-		let closestX = Math.max(this.position.x, Math.min(BallPosX, this.position.x + width))
-		let closestY = Math.max(this.position.y, Math.min(BallPosY, this.position.y + height))
-
-		let distanceX = BallPosX - closestX
-		let distanceY = BallPosY - closestY
-
-		let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
-
-
-		// Corrección de trayectoria en caso de colisión.
-		if (distance <= Ball.radius) {
-			this.newAngle(Ball, closestX, closestY)
-			Ball.PlayerColition = true
-		}
-	}
-
-
-
-	// Cambio de ángulo de la pelota.
-	newAngle(Ball, closestX, closestY) {
-		// Aumento de velocidad por colisión.
-		Ball.velocity++
-
-		// Aumento de carga del jugador.
-		if (this.charge < this.maxCharge && !this.powerUp) this.charge += 60
-
-
-		let hitY = closestY - this.position.y
-		let zone = Math.round(hitY/(height/5))
-		//console.log(zone)
-
-		let NewAngleRight = [315, 333, 350, 10, 27, 45]
-		let NewAngleLeft = [225, 208, 190, 170, 152, 135]
-
-		let NewAngle = 0
-
-		// Establecimiento del nuevo ángulo en base a la zona de colisión en el jugador.
-		if (closestX > this.position.x + width/2)
-			NewAngle = NewAngleRight[zone]
-		else if (closestX < this.position.x + width/2)
-			NewAngle = NewAngleLeft[zone]
-
-		// Establecimiento del nuevo ángulo con un añadido aleatorio para evitar búcles infinitos.
-		Ball.angle = NewAngle + myMath.random(-5, 5)
-		Ball.extraSpeed = this.powerUp ? true : false
-		Ball.speedCalculation( this.powerUp ? Ball.velocity + 8 : Ball.velocity )
-	}
-
-
-
 	// Función de dibujado para el jugador.
 	draw() {
 		// Dibujo del orbe de poder.

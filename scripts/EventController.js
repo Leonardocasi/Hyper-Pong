@@ -31,6 +31,10 @@ let controlServe2 = false
 let scoreboard1
 let scoreboard2
 
+// variables para el cálculo de colisiones.
+let closestX
+let closestY
+
 const goals = { player1: 0, player2: 0 }
 
 
@@ -147,9 +151,17 @@ function update() {
 			}
 
 
-			// Verificación de colisiones.
-			player1.ballColition(Ball, Ball.position.x, Ball.position.y)
-			player2.ballColition(Ball, Ball.position.x, Ball.position.y)
+			// Verificación de colisiones con los jugadores.
+			if (ballColition(Ball, player1, Ball.position.x, Ball.position.y)) {
+				newBallAngle(Ball, player1, closestX, closestY)
+				Ball.PlayerColition = true
+			}
+
+			if (ballColition(Ball, player2, Ball.position.x, Ball.position.y)) {
+				newBallAngle(Ball, player2, closestX, closestY)
+				Ball.PlayerColition = true
+			}
+			
 			
 			// Verificación de bola fantasma. (Errores en la detección de colisiones debido a Stuttering)
 			// Jugador 1
@@ -162,10 +174,9 @@ function update() {
 					Ball.past.y <= player1.position.y + Players.height
 				) {
 					Ball.position.x = player1.position.x + Players.width + Ball.radius
-					player1.newAngle(Ball, Ball.position.x, Ball.past.y)
+					newBallAngle(Ball, player1, Ball.position.x, Ball.past.y)
 				}
 			}
-
 
 			// Jugador 2
 			if (Ball.position.x + Ball.radius >= player2.position.x && !Ball.PlayerColition) {
@@ -177,8 +188,26 @@ function update() {
 					Ball.past.y <= player2.position.y + Players.height
 				) {
 					Ball.position.x = player2.position.x - Ball.radius
-					player2.newAngle(Ball, Ball.position.x, Ball.past.y)
+					newBallAngle(Ball, player2, Ball.position.x, Ball.past.y)
 				}
+			}
+
+
+			// Verificación de colisiones con el escenario.
+			// Colisión Superior
+			if (Math.round(Ball.position.y) <= Math.round(Ball.radius + scene.density)) {
+				Ball.position.y = Ball.radius + scene.density
+				Ball.speed.y *= -1
+				Ball.getNewAngle()
+				audio.play(audio.sceneHit)
+			}
+
+			// Colisión inferior
+			if (Math.round(System.unscaledHeight - Ball.position.y) <= Math.round(Ball.radius + scene.density)) {
+				Ball.position.y = System.unscaledHeight - Ball.radius - scene.density
+				Ball.speed.y *= -1
+				Ball.getNewAngle()
+				audio.play(audio.sceneHit)
 			}
 
 
@@ -250,6 +279,55 @@ function update() {
 	Balls.forEach(Ball => {
 		Ball.draw()
 	})
+}
+
+
+
+// Función para la detección de colisiones de las pelotas con los jugadores.
+function ballColition(Ball, player, BallPosX, BallPosY) {
+	closestX = Math.max(player.position.x, Math.min(BallPosX, player.position.x + Players.width))
+	closestY = Math.max(player.position.y, Math.min(BallPosY, player.position.y + Players.height))
+	
+	let distanceX = BallPosX - closestX
+	let distanceY = BallPosY - closestY
+	
+	let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2)
+
+	return distance <= Ball.radius
+}
+
+
+
+// Función para realizar los cambios necesarios en caso de que se produzca una colisión con un jugador.
+function newBallAngle(Ball, player, closestX, closestY) {
+	audio.play(audio.paddleHit)
+
+	// Aumento de velocidad por colisión.
+	Ball.velocity++
+
+	// Aumento de carga del jugador.
+	if (player.charge < player.maxCharge && !player.powerUp) player.charge += 60
+
+
+	let hitY = closestY - player.position.y
+	let zone = Math.round(hitY/(Players.height/5))
+	//console.log(zone)
+
+	let NewAngleRight = [315, 333, 350, 10, 27, 45]
+	let NewAngleLeft = [225, 208, 190, 170, 152, 135]
+
+	let NewAngle = 0
+
+	// Establecimiento del nuevo ángulo en base a la zona de colisión en el jugador.
+	if (closestX > player.position.x + Players.width/2)
+		NewAngle = NewAngleRight[zone]
+	else if (closestX < player.position.x + Players.width/2)
+		NewAngle = NewAngleLeft[zone]
+
+	// Establecimiento del nuevo ángulo con un añadido aleatorio para evitar búcles infinitos.
+	Ball.angle = NewAngle + myMath.random(-5, 5)
+	Ball.extraSpeed = player.powerUp ? true : false
+	Ball.speedCalculation( player.powerUp ? Ball.velocity + 8 : Ball.velocity )
 }
 
 

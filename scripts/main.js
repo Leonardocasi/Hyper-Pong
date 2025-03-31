@@ -55,8 +55,10 @@ const Key = {
 function main() {
 	newRes()
 
-	EventController.start()
-	requestAnimationFrame(mainLoop)
+	window.onload = function() {
+		EventController.start()
+		requestAnimationFrame(mainLoop)
+	}
 }
 
 

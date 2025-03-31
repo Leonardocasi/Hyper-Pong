@@ -13,10 +13,10 @@ class Scoreboard {
 		this.halfHeight = this.height/2
 
 		// Valores del Sprite
-		this.numSprite = sprites.Numbers
+		this.sprite = sprites.Numbers
 
-		this.widthNum = 0
-		this.heightNum = 0
+		this.widthNum = this.sprite.naturalWidth / 11
+		this.heightNum = this.sprite.naturalHeight
 
 		// Marcador
 		this.firstDigit = 0
@@ -34,9 +34,6 @@ class Scoreboard {
 
 	// Función de inicialización.
 	start() {
-		this.widthNum = this.numSprite.naturalWidth / 11
-		this.heightNum = this.numSprite.naturalHeight
-
 		if (this.position.x < System.halfWidth) 
 			this.powerPosition.x = this.position.x - this.width - this.radius - this.lineWidth*2
 		else this.powerPosition.x = this.position.x + this.width + this.radius + this.lineWidth*2
@@ -56,7 +53,7 @@ class Scoreboard {
 		// Primer Dígito.
 		System.ctx.drawImage(
 			// Sprite.
-			this.numSprite,
+			this.sprite,
 
 			// Dentro del Sprite.
 			this.firstDigit * this.widthNum, 0,		// Coordenadas.
@@ -70,7 +67,7 @@ class Scoreboard {
 		// Segundo Dígito.
 		System.ctx.drawImage(
 			// Sprite.
-			this.numSprite,
+			this.sprite,
 
 			// Dentro del Sprite.
 			this.secondDigit * this.widthNum, 0,	// Coordenadas.

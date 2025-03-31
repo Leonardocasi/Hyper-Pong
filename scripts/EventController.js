@@ -5,6 +5,7 @@ import * as scene from './scene.js'
 import * as myMath from './myMath.js'
 import * as Players from './Player.js'
 import { Ball } from './Ball.js'
+import { Bomb } from './Bomb.js'
 import { Scoreboard } from './Scoreboard.js'
 
 
@@ -12,6 +13,7 @@ import { Scoreboard } from './Scoreboard.js'
 
 // ---- Variables Globales ----
 let Balls = []
+let bombs = []
 let player1 = new Players.Player("left")
 let player2 = new Players.Player("right")
 
@@ -42,7 +44,7 @@ const goals = { player1: 0, player2: 0 }
 // Función de inicialización del juego
 // (Solo se ejecuta una vez al inicio y cuando el programa lo solicite de nuevo en un reinicio)
 function start() {
-	Balls = [ new Ball( System.halfWidth, System.halfHeight, 0 ) ]
+	Balls = [ new Ball( { x: System.halfWidth, y: System.halfHeight}, 0 ) ]
 	Balls.forEach(Ball => {
 		Ball.start()
 	})
@@ -55,10 +57,14 @@ function start() {
 	scoreboard1 = new Scoreboard(System.unscaledWidth/6*2)
 	scoreboard2 = new Scoreboard(System.unscaledWidth/6*4)
 
-	window.onload = function() {
-		scoreboard1.start()
-		scoreboard2.start()
-	}
+	scoreboard1.start()
+	scoreboard2.start()
+
+	// Pruebas
+	//bombs = [ new Bomb({ x: 100, y: 100 }, 45) ]
+	//bombs[0].start()
+
+	console.log(Balls[0].spriteSize)
 }
 
 
@@ -81,7 +87,7 @@ function update() {
 		PauseKey = 0
 	}
 
-	
+
 
 
 	// ----- Lógica del juego (dividirlo de esta forma es útil para pausar el juego) -----
@@ -228,6 +234,7 @@ function update() {
 
 
 			Ball.update()
+			//bombs[0].update()
 		}
 	})
 
@@ -279,6 +286,8 @@ function update() {
 	Balls.forEach(Ball => {
 		Ball.draw()
 	})
+
+	//bombs[0].draw()
 }
 
 
@@ -341,7 +350,7 @@ function newBalls(player) {
 		Balls.push( 
 			new Ball(
 				// Coordenadas.
-				Balls[BallIndex].position.x, Balls[BallIndex].position.y, 
+				{ x: Balls[BallIndex].position.x, y: Balls[BallIndex].position.y }, 
 				
 				// Ángulos.
 				player == 1

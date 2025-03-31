@@ -1,12 +1,13 @@
 import * as System from './main.js'
+import * as sprites from './Sprites.js'
 import * as myMath from './myMath.js'
 import { Particle } from './Particle.js'
 
 
 
 class Ball {
-	constructor(x, y, angle) {
-		this.position = { x, y }
+	constructor(position, angle) {
+		this.position = position
 		this.speed = { x: 0, y: 0 }		// Velocidad, valor vectorial.
 
 		this.minVelocity = 17			// Valor inicial de velocidad.
@@ -16,17 +17,22 @@ class Ball {
 		this.friction = 0.967
 		this.frictionTimer = 0
 
+		this.sprite = sprites.Ball
 		this.size = 24
+		this.spriteSize = this.sprite.naturalWidth
 		this.radius = this.size/2
+		this.color = "#FFFFFF"
 
 		this.past = { x: 0, y: 0 }		// Coordenadas anteriores
 
 		this.PlayerColition = false
 
 		this.particleTimer = 0
-
 		this.particles = []
 		this.extraSpeed = false
+
+		this.normalParticleColor = [ '#FF1414', '#FF5F32' ]
+		this.powerParticleColor = ['#0094FF', '#3075FF']
 	}
 
 
@@ -74,12 +80,12 @@ class Ball {
 
 		if (this.particleTimer > 1) {
 			if (this.extraSpeed)	this.particles.push(
-					new Particle(this.position.x, this.position.y, '#0094FF', 'circle'),
-					new Particle(this.position.x, this.position.y, '#3075FF', 'circle')
+					new Particle(this.position.x, this.position.y, this.powerParticleColor[0], 'circle'),
+					new Particle(this.position.x, this.position.y, this.powerParticleColor[1], 'circle')
 				)
 			else this.particles.push(
-					new Particle(this.position.x, this.position.y, '#FF1414', 'circle'),
-					new Particle(this.position.x, this.position.y, '#FF5F32', 'circle')
+					new Particle(this.position.x, this.position.y, this.normalParticleColor[0], 'circle'),
+					new Particle(this.position.x, this.position.y, this.normalParticleColor[1], 'circle')
 				)
 
 			this.particleTimer = 0
@@ -102,19 +108,19 @@ class Ball {
 		})
 
 
-		// Dibujo de la pelota
-		System.ctx.beginPath()
-		System.ctx.arc(
-			this.position.x * System.scale,
-			this.position.y * System.scale,
-			this.radius * System.scale,
-			0,		// Angulo de inicio
-			6.2832,	// Angulo final (Ambos en radianes)
-			false
+		// Dibujado de la pelota por sprite
+		System.ctx.drawImage(
+			// Sprite.
+			this.sprite,
+
+			// Coordenadas.
+			(this.position.x - this.radius) * System.scale,
+			(this.position.y - this.radius) * System.scale,
+
+			// Ancho y alto.
+			this.radius * 2 * System.scale, 
+			this.radius * 2 * System.scale
 		)
-		System.ctx.fillStyle = "#fff"
-		System.ctx.fill()
-		System.ctx.closePath()
 	}
 
 

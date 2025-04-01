@@ -61,8 +61,8 @@ function start() {
 	scoreboard2.start()
 
 	// Pruebas
-	//bombs = [ new Bomb({ x: 100, y: 100 }, 45) ]
-	//bombs[0].start()
+	bombs = [ new Bomb({ x: 100, y: 100 }, 45) ]
+	bombs[0].start()
 
 	console.log(Balls[0].spriteSize)
 }
@@ -145,14 +145,14 @@ function update() {
 			//	Jugador 1
 			if (System.Key.Player1Serve && scoreboard1.power != -1 && !controlServe1) {
 				controlServe1 = true
-				newBalls(1)
+				/*if ( scoreboard1.power == 0 )*/ powerUpMultipleBalls(1)
 				scoreboard1.power = -1
 			}
 
 			//	Jugador 2
 			if (System.Key.Player2Serve && scoreboard2.power != -1 && !controlServe2) {
 				controlServe2 = true
-				newBalls(2)
+				powerUpMultipleBalls(2)
 				scoreboard2.power = -1
 			}
 
@@ -234,10 +234,10 @@ function update() {
 
 
 			Ball.update()
-			//bombs[0].update()
 		}
 	})
-
+	
+	if (GameMode == 2) bombs[0].update()
 
 
 
@@ -287,7 +287,7 @@ function update() {
 		Ball.draw()
 	})
 
-	//bombs[0].draw()
+	bombs[0].draw()
 }
 
 
@@ -342,7 +342,7 @@ function newBallAngle(Ball, player, closestX, closestY) {
 
 
 // Función para el poder de las multiples pelotas.
-function newBalls(player) {
+function powerUpMultipleBalls(player) {
 	let BallIndex = myMath.random(0, Balls.length - 1)
 	let Length = Balls.length
 
@@ -364,16 +364,22 @@ function newBalls(player) {
 
 
 
+// 
+
+
+
 // Función para asignar un poder a un jugador.
 function newPower(player) {
+	let power = myMath.random(0, 1)
+
 	switch(player) {
 		case 1:
-			scoreboard1.power = 0
-			scoreboard1.powerSprite = sprites.Power[0]
+			scoreboard1.power = power
+			scoreboard1.powerSprite = sprites.Power[power]
 			break
 		case 2:
-			scoreboard2.power = 0
-			scoreboard2.powerSprite = sprites.Power[0]
+			scoreboard2.power = power
+			scoreboard2.powerSprite = sprites.Power[power]
 			break
 	}
 }
@@ -384,7 +390,6 @@ export {
 	// Funciones
 	start,
 	update,
-	newBalls,
 	newPower,
 
 

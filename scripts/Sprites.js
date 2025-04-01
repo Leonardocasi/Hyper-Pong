@@ -7,9 +7,13 @@ const Ball = new Image()
 Ball.src = 'sprites/Ball.png'
 
 
-const Power = [ new Image() ]
+const Bomb = new Image()
+Bomb.src = 'sprites/Bomb.png'
+
+
+const Power = [ new Image(), new Image() ]
 for (let i = 0; i < Power.length; i++) Power[i].src = `sprites/power_${i}.png`
 
 
 
-export { Numbers, Ball, Power }
+export { Numbers, Ball, Bomb, Power }

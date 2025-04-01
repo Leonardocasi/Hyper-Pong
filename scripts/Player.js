@@ -21,7 +21,7 @@ class Player {
 
 		// Variables de poderes.
 		this.chargeMargin = 4
-		this.charge = 0
+		this.charge = 1800
 		this.maxCharge = 1800
 		this.powerUp = false
 
@@ -56,7 +56,7 @@ class Player {
 			this.position.y = System.unscaledHeight - scene.density - height
 
 
-		// Activación del poder
+		// Activación del poder básico
 		if (Power && this.charge >= this.maxCharge && !this.powerUp) {
 			this.powerUp = true
 			this.speed += 4
@@ -64,7 +64,7 @@ class Player {
 		}
 
 
-		// Revocamiento de poder
+		// Revocamiento de poder básico
 		if (this.powerUp)	this.charge -= System.DeltaTime
 		if (this.powerUp && this.charge <= 0) {
 			this.charge = 0

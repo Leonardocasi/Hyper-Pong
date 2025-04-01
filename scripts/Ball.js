@@ -21,7 +21,6 @@ class Ball {
 		this.size = 24
 		this.spriteSize = this.sprite.naturalWidth
 		this.radius = this.size/2
-		this.color = "#FFFFFF"
 
 		this.past = { x: 0, y: 0 }		// Coordenadas anteriores
 

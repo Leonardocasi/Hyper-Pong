@@ -21,7 +21,7 @@ class Player {
 
 		// Variables de poderes.
 		this.chargeMargin = 4
-		this.charge = 1800
+		this.charge = 0
 		this.maxCharge = 1800
 		this.powerUp = false
 

@@ -59,10 +59,6 @@ function start() {
 
 	scoreboard1.start()
 	scoreboard2.start()
-
-	// Pruebas
-	bombs = [ new Bomb({ x: 100, y: 100 }, 45) ]
-	bombs[0].start()
 }
 
 
@@ -104,14 +100,16 @@ function update() {
 		//	Jugador 1
 		if (System.Key.Player1Serve && scoreboard1.power != -1 && !controlServe1) {
 			controlServe1 = true
-			/*if ( scoreboard1.power == 0 )*/ powerUpMultipleBalls(1)
+			if ( scoreboard1.power == 0 ) powerUpMultipleBalls(1)
+			if ( scoreboard1.power == 1 ) powerUpBombBall(1)
 			scoreboard1.power = -1
 		}
 				
 		//	Jugador 2
 		if (System.Key.Player2Serve && scoreboard2.power != -1 && !controlServe2) {
 			controlServe2 = true
-			powerUpMultipleBalls(2)
+			if ( scoreboard2.power == 0 ) powerUpMultipleBalls(2)
+			if ( scoreboard2.power == 1 ) powerUpBombBall(2)
 			scoreboard2.power = -1
 		}
 	}
@@ -230,6 +228,7 @@ function update() {
 
 	// Comportamiento de las bombas del PowerUp de las bombas xd.
 	bombs.map((Bomb, index) => {
+		// Detección de la colisión con los jugadores.
 		if (playerColition(Bomb, player1)) {
 			if (goals.player1 > 0) {
 				goals.player1--
@@ -246,9 +245,18 @@ function update() {
 			bombs.splice(index, 1)
 		}
 
+
+		// Detección de la bomba saliendo de la zona de juego.
+		if (Math.floor(Bomb.position.x) > System.unscaledWidth + Bomb.radius + 30 ||
+			Math.floor(Bomb.position.x) < -Bomb.radius - 30) {
+			bombs.splice(index, 1)
+		}
+
+
 		if (GameMode != 3) {
 			sceneColition(Bomb)
 			Bomb.update()
+			console.log(bombs)
 		}
 	})
 
@@ -396,7 +404,7 @@ function powerUpMultipleBalls(player) {
 				// Coordenadas.
 				{ x: Balls[BallIndex].position.x, y: Balls[BallIndex].position.y }, 
 				
-				// Ángulos.
+				// Posibles ángulos.
 				player == 1
 				? (myMath.random(0,100) <= 50) ? myMath.random(10, 45) : myMath.random(315, 350)
 				: (myMath.random(0,100) <= 50) ? myMath.random(135, 170) : myMath.random(190, 225)
@@ -410,7 +418,23 @@ function powerUpMultipleBalls(player) {
 
 // Función para el poder de la bola bomba.
 function powerUpBombBall(player) {
-	
+	// Esto me ayudará a seleccionar una bola aleatoria en caso de ya haber varias.
+	let BallIndex = myMath.random(0, Balls.length -1)
+
+	for (let i = 0; i < 2; i++)
+	bombs.push( new Bomb(
+		// Coordenadas de origen.
+		{ x: Balls[BallIndex].position.x, y: Balls[BallIndex].position.y },
+
+		// Posibles ángulos.
+		player == 1
+		? (myMath.random(0,100) <= 50) ? myMath.random(10, 45) : myMath.random(315, 350)
+		: (myMath.random(0,100) <= 50) ? myMath.random(135, 170) : myMath.random(190, 225)
+	))
+
+	bombs.map(bomb => {
+		bomb.start()
+	})
 }
 
 

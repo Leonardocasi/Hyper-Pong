@@ -158,10 +158,10 @@ function update() {
 					System.cursor.y >= button.position.y &&
 					System.cursor.y <= button.position.y + button.height
 				) {
-					console.log(menuOption)
 					menuOption = index
 					if (System.cursor.clic) {
 						menuState = 0
+						GameMode = 0
 						start()
 					}
 				} else menuOption = -1
@@ -172,7 +172,7 @@ function update() {
 		})
 	}
 
-	console.log(menuOption)
+
 
 
 	// ----- Lógica del juego (dividirlo de esta forma es útil para pausar el juego) -----

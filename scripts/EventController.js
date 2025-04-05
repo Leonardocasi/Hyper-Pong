@@ -540,7 +540,6 @@ function newBallAngle(Ball, player, isBot, closestX, closestY) {
 
 	let hitY = closestY - player.position.y
 	let zone = Math.round(hitY/(Players.height/5))
-	//console.log(zone)
 
 	let NewAngleRight = [315, 333, 350, 10, 27, 45]
 	let NewAngleLeft = [225, 208, 190, 170, 152, 135]

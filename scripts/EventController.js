@@ -117,8 +117,6 @@ function update() {
 	}
 
 
-
-
 	// Actualización del menú.
 	if (menuState > 0) {
 		// Funcionamiento con le teclado.
@@ -153,29 +151,28 @@ function update() {
 			cursorActive = true
 		}
 
-		if (cursorActive) {
-			buttons.map((button, index) => {
+		buttons.map((button, index) => {
+			if (cursorActive) {
 				if (System.cursor.x >= button.position.x &&
 					System.cursor.x <= button.position.x + button.width &&
 					System.cursor.y >= button.position.y &&
 					System.cursor.y <= button.position.y + button.height
 				) {
+					console.log(menuOption)
 					menuOption = index
 					if (System.cursor.clic) {
 						menuState = 0
 						start()
 					}
-				}
+				} else menuOption = -1
 
-			})
-		}
+			}
 
-		buttons.map((button, index) => {
-			button.update(index === menuOption)
+			button.update(index == menuOption)
 		})
 	}
 
-
+	console.log(menuOption)
 
 
 	// ----- Lógica del juego (dividirlo de esta forma es útil para pausar el juego) -----
@@ -569,6 +566,10 @@ function newPower(player) {
 
 
 function cursorControl() {
+	if (cursorActive) {
+		menuOption = 1
+	}
+
 	cursorActive = false
 }
 

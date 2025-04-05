@@ -15,8 +15,12 @@ import * as menu from './menu.js'
 // ---- Variables Globales ----
 let Balls = []
 let bombs = []
-let player1 = new Players.Player("left")
-let player2 = new Players.Player("right")
+let player1 = new Players.Bot("left")
+let player2 = new Players.Bot("right")
+
+// los jugadores son bots?
+let player1Bot = true
+let player2Bot = true
 
 
 // Variables para el menú principal.
@@ -26,13 +30,13 @@ let buttons
 
 // Variables para el control del juego.
 let lastGameState = 0
-let GameMode = 3		// 0: Saque de jugador 1, 
+let GameMode = 0		// 0: Saque de jugador 1, 
 						// 1: Saque de jugador 2, 
 						// 2: Juego, 
 						// 3: Pausa
 						// 4: Menú (Valió verga)
 
-let menuState = 1			// 0: Modo de juego.
+let menuState = 1		// 0: Modo de juego.
 						// 1: Menú principal.
 
 let PauseKey = 0
@@ -59,18 +63,30 @@ const goals = { player1: 0, player2: 0 }
 // Función de inicialización del juego
 // (Solo se ejecuta una vez al inicio y cuando el programa lo solicite de nuevo en un reinicio)
 function start() {
+	// Inicialización de la pelota de juego.
 	Balls = [ new Ball( { x: System.halfWidth, y: System.halfHeight}, 0 ) ]
 	Balls.forEach(Ball => {
 		Ball.start()
 	})
 
-	//console.log(Balls.length)
+	bombs = []
+
 	
+	// Inicialización de los jugadores.
 	player1.start()
 	player2.start()
 
+	player1Bot = player1 instanceof Players.Bot ? true : false
+	player2Bot = player2 instanceof Players.Bot ? true : false
+
+
+
+	// inicialización de los marcadores.
 	scoreboard1 = new Scoreboard(System.unscaledWidth/3)
 	scoreboard2 = new Scoreboard(System.unscaledWidth/3*2)
+
+	goals.player1 = 0
+	goals.player2 = 0
 
 	scoreboard1.start()
 	scoreboard2.start()
@@ -93,11 +109,24 @@ function update() {
 	if ((System.Key.Esc || System.Key.Enter) && !PauseKey) {
 		PauseKey = 1
 
-		if (menuState > 0) {
+		if (menuState > 0 && menuOption != -1 && !cursorActive) {
+			console.log (menuOption)
 			GameMode = 0
 			menuState = 0
+
+			if (menuOption == 0) {
+				player1 = new Players.Player("left")
+				player2 = new Players.Bot("right")
+			}
+
+			if (menuOption == 1) {
+				player1 = new Players.Player("left")
+				player2 = new Players.Player("right")
+			}
+
+			start()
 		}
-		else {
+		else if (menuState == 0) {
 			if (GameMode != 3) {
 				lastGameState = GameMode
 				GameMode = 3
@@ -113,20 +142,20 @@ function update() {
 	}
 
 	if (!(System.Key.Player1Down || System.Key.Player2Down) && !(System.Key.Player1Up || System.Key.Player2Up)) {
-		menuKeys = 0
+		menuKeys = false
 	}
 
 
 	// Actualización del menú.
 	if (menuState > 0) {
 		// Funcionamiento con le teclado.
-		if ((System.Key.Player1Down || System.Key.Player2Down) && menuOption < buttons.length - 1 && !menuKeys) {
-			menuKeys = 1
+		if ((System.Key.Player1Down || System.Key.Player2Down) && menuOption < buttons.length - 1 && !menuKeys && !cursorActive) {
+			menuKeys = true
 
 			menuOption++
 		}
-		else if ((System.Key.Player1Up || System.Key.Player2Up) && menuOption > 0 && !menuKeys) {
-			menuKeys = 1
+		else if ((System.Key.Player1Up || System.Key.Player2Up) && menuOption > 0 && !menuKeys && !cursorActive) {
+			menuKeys = true
 
 			menuOption--
 		}
@@ -134,13 +163,13 @@ function update() {
 
 		// En caso de pasar de mouse a teclado.
 		if ((System.Key.Player1Down || System.Key.Player2Down) && cursorActive && !menuKeys) {
-			menuKeys = 1
-
+			menuKeys = true
+			cursorActive = false
 			menuOption = 0
 		}
 		else if ((System.Key.Player1Up || System.Key.Player2Up) && cursorActive && !menuKeys) {
-			menuKeys = 1
-
+			menuKeys = true
+			cursorActive = false
 			menuOption = buttons.length - 1
 		}
 		
@@ -151,8 +180,10 @@ function update() {
 			cursorActive = true
 		}
 
+		
 		buttons.map((button, index) => {
 			if (cursorActive) {
+				menuOption = -1
 				if (System.cursor.x >= button.position.x &&
 					System.cursor.x <= button.position.x + button.width &&
 					System.cursor.y >= button.position.y &&
@@ -162,9 +193,20 @@ function update() {
 					if (System.cursor.clic) {
 						menuState = 0
 						GameMode = 0
+
+						if (index == 0) {
+							player1 = new Players.Player("left")
+							player2 = new Players.Bot("right")
+						}
+
+						if (index == 1) {
+							player1 = new Players.Player("left")
+							player2 = new Players.Player("right")
+						}
+
 						start()
 					}
-				} else menuOption = -1
+				}
 
 			}
 
@@ -178,8 +220,19 @@ function update() {
 	// ----- Lógica del juego (dividirlo de esta forma es útil para pausar el juego) -----
 	// Movimiento de los jugadores
 	if (GameMode != 3) {
-		player1.update(System.Key.Player1Up, System.Key.Player1Down, System.Key.Player1Power)
-		player2.update(System.Key.Player2Up, System.Key.Player2Down, System.Key.Player2Power)
+		if (player1Bot) {
+			player1.updateBot(Balls, GameMode == 0, 1, scoreboard1.power)
+			player1.update(false, false, false)
+		
+		} else
+			player1.update(System.Key.Player1Up, System.Key.Player1Down, System.Key.Player1Power)
+
+
+		if (player2Bot) {
+			player2.updateBot(Balls, GameMode == 1, 2, scoreboard2.power)
+			player2.update(false, false, false)
+		}else 
+			player2.update(System.Key.Player2Up, System.Key.Player2Down, System.Key.Player2Power)
 	}
 
 
@@ -190,18 +243,12 @@ function update() {
 		// Activación de poderes.
 		//	Jugador 1
 		if (System.Key.Player1Serve && scoreboard1.power != -1 && !controlServe1) {
-			controlServe1 = true
-			if ( scoreboard1.power == 0 ) powerUpMultipleBalls(1)
-			if ( scoreboard1.power == 1 ) powerUpBombBall(1)
-			scoreboard1.power = -1
+			powerUpActivation(1)
 		}
 				
 		//	Jugador 2
 		if (System.Key.Player2Serve && scoreboard2.power != -1 && !controlServe2) {
-			controlServe2 = true
-			if ( scoreboard2.power == 0 ) powerUpMultipleBalls(2)
-			if ( scoreboard2.power == 1 ) powerUpBombBall(2)
-			scoreboard2.power = -1
+			powerUpActivation(2)
 		}
 	}
 
@@ -216,14 +263,7 @@ function update() {
 			Ball.position.y = player1.position.y + Players.height/2
 
 			if (System.Key.Player1Serve) {
-				controlServe1 = true
-				Ball.angle = (myMath.random(0,1)) ? myMath.random(10, 45) : myMath.random(315, 350)
-				Ball.start()
-				if (player1.powerUp) {
-					Ball.extraSpeed = true
-					Ball.speedCalculation(Ball.velocity + 8)
-				} else Ball.extraSpeed = false
-				GameMode = 2
+				serve(Ball, 1)
 			}
 		}
 
@@ -234,14 +274,7 @@ function update() {
 			Ball.position.y = player2.position.y + Players.height/2
 
 			if (System.Key.Player2Serve) {
-				controlServe2 = true
-				Ball.angle = (myMath.random(0,1)) ? myMath.random(135, 170) : myMath.random(190, 225)
-				Ball.start()
-				if (player2.powerUp) {
-					Ball.extraSpeed = true
-					Ball.speedCalculation(Ball.velocity + 8)
-				} else Ball.extraSpeed = false
-				GameMode = 2
+				serve(Ball, 2)
 			}
 		}
 
@@ -252,12 +285,12 @@ function update() {
 			// Revisión de colisiones para todas las pelotas del juego.
 			// Verificación de colisiones con los jugadores.
 			if (playerColition(Ball, player1)) {
-				newBallAngle(Ball, player1, closestX, closestY)
+				newBallAngle(Ball, player1, player1Bot, closestX, closestY)
 				Ball.PlayerColition = true
 			}
 
 			if (playerColition(Ball, player2)) {
-				newBallAngle(Ball, player2, closestX, closestY)
+				newBallAngle(Ball, player2, player2Bot, closestX, closestY)
 				Ball.PlayerColition = true
 			}
 			
@@ -273,7 +306,7 @@ function update() {
 					Ball.past.y <= player1.position.y + Players.height
 				) {
 					Ball.position.x = player1.position.x + Players.width + Ball.radius
-					newBallAngle(Ball, player1, Ball.position.x, Ball.past.y)
+					newBallAngle(Ball, player1, player1Bot, Ball.position.x, Ball.past.y)
 				}
 			}
 
@@ -287,7 +320,7 @@ function update() {
 					Ball.past.y <= player2.position.y + Players.height
 				) {
 					Ball.position.x = player2.position.x - Ball.radius
-					newBallAngle(Ball, player2, Ball.position.x, Ball.past.y)
+					newBallAngle(Ball, player2, player2Bot, Ball.position.x, Ball.past.y)
 				}
 			}
 
@@ -422,6 +455,34 @@ function update() {
 
 
 
+// Función para el saque.
+function serve(Ball, player) {
+	if (player == 1) {
+		controlServe1 = true
+		Ball.angle = (myMath.random(0,1)) ? myMath.random(10, 45) : myMath.random(315, 350)
+		Ball.start()
+		if (player1.powerUp) {
+			Ball.extraSpeed = true
+			Ball.speedCalculation(Ball.velocity + 8)
+		} else Ball.extraSpeed = false
+		GameMode = 2
+	}
+
+	if (player == 2) {
+		controlServe2 = true
+		Ball.angle = (myMath.random(0,1)) ? myMath.random(135, 170) : myMath.random(190, 225)
+		Ball.start()
+		if (player2.powerUp) {
+			Ball.extraSpeed = true
+			Ball.speedCalculation(Ball.velocity + 8)
+		} else Ball.extraSpeed = false
+		GameMode = 2
+	}
+}
+
+
+
+
 // Función para revisar las colisiones con el escenario
 function sceneColition(Ball) {
 	// Colisión Superior
@@ -459,14 +520,22 @@ function playerColition(Ball, player) {
 
 
 // Función para realizar los cambios necesarios en caso de que se produzca una colisión con un jugador.
-function newBallAngle(Ball, player, closestX, closestY) {
+function newBallAngle(Ball, player, isBot, closestX, closestY) {
 	audio.play(audio.paddleHit)
 
 	// Aumento de velocidad por colisión.
 	Ball.velocity++
 
 	// Aumento de carga del jugador.
-	if (player.charge < player.maxCharge && !player.powerUp) player.charge += 60
+	if (player.charge < player.maxCharge && !player.powerUp) player.charge += 120
+
+
+	// Renicio de variables para los bots.
+	if (isBot) {
+		player.colitionTarget = -1
+		player.miss = -1		
+	}
+	
 
 
 	let hitY = closestY - player.position.y
@@ -488,6 +557,24 @@ function newBallAngle(Ball, player, closestX, closestY) {
 	Ball.angle = NewAngle + myMath.random(-5, 5)
 	Ball.extraSpeed = player.powerUp ? true : false
 	Ball.speedCalculation( player.powerUp ? Ball.velocity + 8 : Ball.velocity )
+}
+
+
+
+// Activación del poder.
+function powerUpActivation(player) {
+	if (player == 1) {
+		controlServe1 = true
+		if ( scoreboard1.power == 0 ) powerUpMultipleBalls(1)
+		if ( scoreboard1.power == 1 ) powerUpBombBall(1)
+		scoreboard1.power = -1
+	}
+	else if (player == 2) {
+		controlServe2 = true
+		if ( scoreboard2.power == 0 ) powerUpMultipleBalls(2)
+		if ( scoreboard2.power == 1 ) powerUpBombBall(2)
+		scoreboard2.power = -1
+	}
 }
 
 
@@ -558,30 +645,13 @@ function newPower(player) {
 
 
 
-// ============================================================
-// ==== Funciones extra para el funcionamiento del sistema ====
-// ============================================================
-
-
-
-
-function cursorControl() {
-	if (cursorActive) {
-		menuOption = 1
-	}
-
-	cursorActive = false
-}
-
-
-
-
 export {
 	// Funciones
 	start,
 	update,
+	serve,
 	newPower,
-	cursorControl,
+	powerUpActivation,
 
 
 	// Cosas que no son funciones xD

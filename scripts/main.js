@@ -117,7 +117,6 @@ addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
 	// Ocultar el mouse tras presionar una tecla.
 	document.body.style.cursor = 'none';
-	EventController.cursorControl()
 })
 
 // Detección del alza de una tecla.

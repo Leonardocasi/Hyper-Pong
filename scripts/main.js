@@ -53,8 +53,6 @@ const cursor = {
 	x: 0, 
 	y: 0,
 
-	active: false,
-
 	// antiguos.
 	lastx: 0,
 	lasty: 0
@@ -117,7 +115,6 @@ addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
 	// Ocultar el mouse tras presionar una tecla.
 	document.body.style.cursor = 'none';
-	cursor.active = false
 })
 
 // Detección del alza de una tecla.
@@ -133,8 +130,6 @@ document.onmousemove = function() {
 
 
 canvas.addEventListener('mousemove', function(event) {
-	cursor.active = true
-
 	// Obtén las coordenadas del borde del canvas
     const rect = canvas.getBoundingClientRect()
     

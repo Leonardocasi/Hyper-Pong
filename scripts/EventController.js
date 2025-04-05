@@ -37,6 +37,7 @@ let menuState = 1			// 0: Modo de juego.
 
 let PauseKey = 0
 let menuKeys = 0
+let cursorActive = false
 
 
 // Esto evita que se active el poder durante un saque.
@@ -132,12 +133,34 @@ function update() {
 			menuOption--
 		}
 
-		// En caso de teclear y estaba en el modo ratón.
+
+		// En caso de pasar de mouse a teclado.
+		if ((System.Key.Player1Down || System.Key.Player2Down) && cursorActive && !menuKeys) {
+			menuKeys = 1
+
+			menuOption = 0
+		}
+		else if ((System.Key.Player1Up || System.Key.Player2Up) && cursorActive && !menuKeys) {
+			menuKeys = 1
+
+			menuOption = buttons.length - 1
+		}
 		
 
 		// En caso de usar el ratón.
 		if (System.cursor.x != System.cursor.lastx) {
 			menuOption = -1
+
+			buttons.map((button, index) => {
+				if (System.cursor.x >= button.position.x &&
+					System.cursor.x <= button.position.x + button.width &&
+					System.cursor.y >= button.position.y &&
+					System.cursor.y <= button.position.y + button.height
+				) {
+					menuOption = index
+				}
+
+			})
 		}
 
 		buttons.map((button, index) => {

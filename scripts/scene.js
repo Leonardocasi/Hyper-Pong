@@ -21,7 +21,7 @@ function draw(menuState) {
 		System.canvas.width,
 		System.canvas.height
 	)
-	console.log(menuState)
+	
 
 
 	// Color del dibujado del escenario

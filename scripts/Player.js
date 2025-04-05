@@ -95,6 +95,12 @@ class Player {
 				Orbs.splice(index, 1)
 				EventController.newPower(this.side == "left" ? 1 : 2)
 			}
+
+			if (Orb.position.x + Orb.radius >= System.unscaledWidth + 30 ||
+				Orb.position.x - Orb.radius <= -30
+			) {
+				Orbs.splice(index, 1)
+			}
 		})
 	}
 
@@ -252,10 +258,10 @@ class Bot extends Player {
 	}
 
 	gameMove(Balls) {
-		if (this.position.y + this.colitionTarget < Balls[0].position.y) {
+		if (this.position.y + this.colitionTarget < Balls[0].position.y - 20) {
 			this.position.y += this.speed * System.DeltaTime
 		}
-		else if (this.position.y + this.colitionTarget > Balls[0].position.y) {
+		else if (this.position.y + this.colitionTarget > Balls[0].position.y + 20) {
 			this.position.y -= this.speed * System.DeltaTime
 		}
 	}

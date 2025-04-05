@@ -7,6 +7,7 @@ import * as Players from './Player.js'
 import { Ball } from './Ball.js'
 import { Bomb } from './Bomb.js'
 import { Scoreboard } from './Scoreboard.js'
+import * as menu from './menu.js'
 
 
 
@@ -17,14 +18,26 @@ let bombs = []
 let player1 = new Players.Player("left")
 let player2 = new Players.Player("right")
 
+
+// Variables para el menú principal.
+let menuOption = -1
+let buttons
+
+
+// Variables para el control del juego.
 let lastGameState = 0
-let GameMode = 0		// 0: Saque de jugador 1, 
+let GameMode = 3		// 0: Saque de jugador 1, 
 						// 1: Saque de jugador 2, 
 						// 2: Juego, 
 						// 3: Pausa
 						// 4: Menú (Valió verga)
 
+let menuState = 1			// 0: Modo de juego.
+						// 1: Menú principal.
+
 let PauseKey = 0
+let menuKeys = 0
+
 
 // Esto evita que se active el poder durante un saque.
 let controlServe1 = false
@@ -33,11 +46,12 @@ let controlServe2 = false
 let scoreboard1
 let scoreboard2
 
+
 // variables para el cálculo de colisiones.
 let closestX
 let closestY
 
-const goals = { player1: 1, player2: 1 }
+const goals = { player1: 0, player2: 0 }
 
 
 
@@ -54,11 +68,19 @@ function start() {
 	player1.start()
 	player2.start()
 
-	scoreboard1 = new Scoreboard(System.unscaledWidth/6*2)
-	scoreboard2 = new Scoreboard(System.unscaledWidth/6*4)
+	scoreboard1 = new Scoreboard(System.unscaledWidth/3)
+	scoreboard2 = new Scoreboard(System.unscaledWidth/3*2)
 
 	scoreboard1.start()
 	scoreboard2.start()
+
+
+	// Variables del menú
+	buttons = [ new menu.Button(System.halfWidth, "Un Jugador"), new menu.Button(System.halfWidth, "Multijugador") ]
+
+	buttons.map((button, index) => 
+		button.start(index, System.unscaledHeight / 2)
+	)
 }
 
 
@@ -70,15 +92,57 @@ function update() {
 	if ((System.Key.Esc || System.Key.Enter) && !PauseKey) {
 		PauseKey = 1
 
-		if (GameMode != 3) {
-			lastGameState = GameMode
-			GameMode = 3
+		if (menuState > 0) {
+			GameMode = 0
+			menuState = 0
 		}
-		else GameMode = lastGameState
+		else {
+			if (GameMode != 3) {
+				lastGameState = GameMode
+				GameMode = 3
+			}
+			else GameMode = lastGameState
+		}
 	}
 
+
+	// Revisión del control de teclas.
 	if (!System.Key.Enter && !System.Key.Esc) {
 		PauseKey = 0
+	}
+
+	if (!(System.Key.Player1Down || System.Key.Player2Down) && !(System.Key.Player1Up || System.Key.Player2Up)) {
+		menuKeys = 0
+	}
+
+
+
+
+	// Actualización del menú.
+	if (menuState > 0) {
+		// Funcionamiento con le teclado.
+		if ((System.Key.Player1Down || System.Key.Player2Down) && menuOption < buttons.length - 1 && !menuKeys) {
+			menuKeys = 1
+
+			menuOption++
+		}
+		else if ((System.Key.Player1Up || System.Key.Player2Up) && menuOption > 0 && !menuKeys) {
+			menuKeys = 1
+
+			menuOption--
+		}
+
+		// En caso de teclear y estaba en el modo ratón.
+		
+
+		// En caso de usar el ratón.
+		if (System.cursor.x != System.cursor.lastx) {
+			menuOption = -1
+		}
+
+		buttons.map((button, index) => {
+			button.update(index === menuOption)
+		})
 	}
 
 
@@ -295,10 +359,14 @@ function update() {
 
 
 	// Llamadas de dibujado
-	scene.draw()
+	scene.draw(menuState)
 
-	scoreboard1.draw()
-	scoreboard2.draw()
+	// El dibujo de los marcadores.
+	// No se dibujarán si el juego se encuentra en el menú principal.
+	if (!(menuState > 0)) {
+		scoreboard1.draw()
+		scoreboard2.draw()
+	}
 
 	player1.draw()
 	player2.draw()
@@ -310,6 +378,12 @@ function update() {
 	bombs.map(Bomb => {
 		Bomb.draw()
 	})
+
+
+	// Dibujado del menú en caso de estar en el menú.
+	if (menuState > 0) {
+		menu.draw(buttons)
+	}
 }
 
 

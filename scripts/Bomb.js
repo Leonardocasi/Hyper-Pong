@@ -12,6 +12,7 @@ class Bomb extends Ball {
 		)
 		this.sprite = sprites.Bomb
 		this.color = "#D31F00"
+		this.shadowColor = "#A50B13"
 		this.normalParticleColor = ["#BB2BFF", "#C261FF"]
 	}
 }

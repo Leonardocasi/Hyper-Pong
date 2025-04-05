@@ -18,6 +18,7 @@ class Ball {
 		this.frictionTimer = 0
 
 		this.sprite = sprites.Ball
+		this.shadowColor = "#2BBA3E"
 		this.size = 24
 		this.spriteSize = this.sprite.naturalWidth
 		this.radius = this.size/2
@@ -107,6 +108,13 @@ class Ball {
 		})
 
 
+		// Punto de control del ctx.
+		System.ctx.save()
+
+		// brillo del contorno.
+		System.ctx.shadowColor = this.shadowColor
+		System.ctx.shadowBlur = 8 * System.scale
+
 		// Dibujado de la pelota por sprite
 		System.ctx.drawImage(
 			// Sprite.
@@ -120,6 +128,8 @@ class Ball {
 			this.radius * 2 * System.scale, 
 			this.radius * 2 * System.scale
 		)
+
+		System.ctx.restore()
 	}
 
 

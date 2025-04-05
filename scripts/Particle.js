@@ -11,7 +11,7 @@ class Particle {
 		this.opacity = 1
 		this.color = color
 		this.shape = shape
-		this.radius = myMath.random(6, 14)
+		this.radius = myMath.random(5, 10)
 	}
 
 

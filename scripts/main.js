@@ -49,6 +49,17 @@ const Key = {
 	Enter:			false,
 }
 
+const cursor = {
+	x: 0, 
+	y: 0,
+
+	active: false,
+
+	// antiguos.
+	lastx: 0,
+	lasty: 0
+}
+
 
 
 // Función principal. Inicialización general.
@@ -79,6 +90,9 @@ function mainLoop(timeStamp) {
 	ctx.clearRect(0,0, canvas.width, canvas.height)
 
 	EventController.update()
+
+	cursor.lastx = cursor.x
+	cursor.lasty = cursor.y
 }
 
 
@@ -103,6 +117,7 @@ addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
 	// Ocultar el mouse tras presionar una tecla.
 	document.body.style.cursor = 'none';
+	cursor.active = false
 })
 
 // Detección del alza de una tecla.
@@ -112,7 +127,21 @@ addEventListener('keyup', ({keyCode}) => {
 
 
 // Mostrar el mouse tras moverlo.
-document.onmousemove = function() { document.body.style.cursor = 'auto'; }
+document.onmousemove = function() { 
+	document.body.style.cursor = 'auto';
+}
+
+
+canvas.addEventListener('mousemove', function(event) {
+	cursor.active = true
+
+	// Obtén las coordenadas del borde del canvas
+    const rect = canvas.getBoundingClientRect()
+    
+    // Calcula las coordenadas x y y del cursor con respecto al canvas
+    cursor.x = Math.round((event.clientX - rect.left) / scale)
+    cursor.y = Math.round((event.clientY - rect.top) / scale)
+})
 
 
 // Función de alternación para Keys
@@ -154,5 +183,6 @@ export {
 	halfHeight,
 
 	// Controles
-	Key
+	Key,
+	cursor
 }

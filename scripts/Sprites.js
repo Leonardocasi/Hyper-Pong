@@ -1,3 +1,14 @@
+// Sprites grandes.
+const background = new Image()
+background.src = 'sprites/backg.png'
+
+
+const title = new Image()
+title.src = 'sprites/title.png'
+
+
+
+// Sprites sencillos.
 // Sprite de los números del marcador.
 const Numbers = new Image()
 Numbers.src = 'sprites/Numbers.png'
@@ -16,4 +27,14 @@ for (let i = 0; i < Power.length; i++) Power[i].src = `sprites/power_${i}.png`
 
 
 
-export { Numbers, Ball, Bomb, Power }
+export {
+	// Sprites grandes.
+	background,
+	title,
+
+	// Sprites pequeños.
+	Numbers,
+	Ball,
+	Bomb,
+	Power
+}

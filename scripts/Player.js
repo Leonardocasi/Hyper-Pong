@@ -100,7 +100,14 @@ class Player {
 
 
 
+		// Punto de control del ctx.
+		System.ctx.save()
+
 		// Base del jugador.
+		// Brillo del contorno.
+		System.ctx.shadowColor= "#fff"
+		System.ctx.shadowBlur = 8 * System.scale
+
 		System.ctx.fillStyle = "#fff"
 		System.ctx.fillRect(
 			this.position.x * System.scale,
@@ -121,6 +128,11 @@ class Player {
 
 
 		// Nivel de carga.
+		// Brilo del contorno.
+		if (!this.powerUp) System.ctx.shadowColor= this.charge >= this.maxCharge ? "#FFD800" : "#FF6A00"
+		else System.ctx.shadowColor = "#00FFFF"
+		System.ctx.shadowBlur = 5 * System.scale
+
 		if (!this.powerUp) System.ctx.fillStyle = this.charge >= this.maxCharge ? "#FFD800" : "#FF6A00"
 		else System.ctx.fillStyle = "#00FFFF"
 		System.ctx.fillRect(
@@ -129,6 +141,9 @@ class Player {
 			(width - 2 * this.chargeMargin) * System.scale,
 			(this.charge * this.chargeSection) * System.scale
 		)
+
+		// Restablecimiento del punto de control.
+		System.ctx.restore()
 	}
 }
 

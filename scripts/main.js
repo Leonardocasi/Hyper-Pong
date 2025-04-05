@@ -53,6 +53,8 @@ const cursor = {
 	x: 0, 
 	y: 0,
 
+	clic: false,
+
 	// antiguos.
 	lastx: 0,
 	lasty: 0
@@ -115,6 +117,7 @@ addEventListener('keydown', ({keyCode}) => {
 	commuteKey(keyCode, true)
 	// Ocultar el mouse tras presionar una tecla.
 	document.body.style.cursor = 'none';
+	EventController.cursorControl()
 })
 
 // Detección del alza de una tecla.
@@ -127,6 +130,18 @@ addEventListener('keyup', ({keyCode}) => {
 document.onmousemove = function() { 
 	document.body.style.cursor = 'auto';
 }
+
+
+// detección del clic del mouse.
+canvas.addEventListener('mousedown', function(event) {
+	commuteClic(event.button, true)
+})
+
+
+// Detección del alza del clic del mouse.
+canvas.addEventListener('mouseup', function(event) {
+	commuteClic(event.button, false)
+})
 
 
 canvas.addEventListener('mousemove', function(event) {
@@ -158,6 +173,15 @@ function commuteKey(keyCode, State) {
 		// Adicionales importantes.
 		case 27:	Key.Esc = State;			break
 		case 13:	Key.Enter = State;			break
+	}
+}
+
+
+
+// Función de alternación para los clics del mouse.
+function commuteClic(clic, state) {
+	switch(clic) {
+		case 0: cursor.clic = state; break;
 	}
 }
 

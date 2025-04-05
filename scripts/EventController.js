@@ -150,7 +150,10 @@ function update() {
 		// En caso de usar el ratón.
 		if (System.cursor.x != System.cursor.lastx) {
 			menuOption = -1
+			cursorActive = true
+		}
 
+		if (cursorActive) {
 			buttons.map((button, index) => {
 				if (System.cursor.x >= button.position.x &&
 					System.cursor.x <= button.position.x + button.width &&
@@ -158,6 +161,10 @@ function update() {
 					System.cursor.y <= button.position.y + button.height
 				) {
 					menuOption = index
+					if (System.cursor.clic) {
+						menuState = 0
+						start()
+					}
 				}
 
 			})
@@ -343,7 +350,6 @@ function update() {
 		if (GameMode != 3) {
 			sceneColition(Bomb)
 			Bomb.update()
-			console.log(bombs)
 		}
 	})
 
@@ -554,11 +560,27 @@ function newPower(player) {
 
 
 
+
+// ============================================================
+// ==== Funciones extra para el funcionamiento del sistema ====
+// ============================================================
+
+
+
+
+function cursorControl() {
+	cursorActive = false
+}
+
+
+
+
 export {
 	// Funciones
 	start,
 	update,
 	newPower,
+	cursorControl,
 
 
 	// Cosas que no son funciones xD

@@ -443,6 +443,30 @@ function update() {
 	if (menuState > 0) {
 		menu.draw(buttons)
 	}
+
+
+	// Si el juego está en pausa. Avisa
+	if (GameMode == 3) {
+		System.ctx.save()
+
+		System.ctx.shadowColor = "#00FFFF"
+		System.ctx.shadowBlur = 20 * System.scale
+		
+		System.ctx.fillStyle = "#FFFFFF"
+		System.ctx.font = `${120 * System.scale}px plus jakarta sans`
+		System.ctx.textAlign = "center"
+		System.ctx.textBaseline = "middle"
+		System.ctx.fillText(
+			// Texto.
+			"PAUSA",
+		
+			// Posición.
+			System.canvas.width/2,
+			System.canvas.height/2
+		)
+	
+		System.ctx.restore()
+	}
 }
 
 

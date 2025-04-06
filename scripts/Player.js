@@ -201,7 +201,7 @@ class Bot extends Player {
 		}
 
 		if (this.miss < 0) {
-			this.miss = myMath.random(0, 100) <= 95 ? 0 : 1
+			this.miss = myMath.random(0, 100) <= 90 ? 0 : 1
 
 			if (this.miss == 1) {
 				this.colitionTarget = height + Balls[0].radius + 5

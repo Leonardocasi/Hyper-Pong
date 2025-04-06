@@ -552,6 +552,7 @@ function newBallAngle(Ball, player, isBot, closestX, closestY) {
 
 	// Aumento de carga del jugador.
 	if (player.charge < player.maxCharge && !player.powerUp) player.charge += 240
+	if (player.charge >= player.maxCharge) player.charge = player.charge.maxCharge
 
 
 	// Renicio de variables para los bots.

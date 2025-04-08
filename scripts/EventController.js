@@ -42,6 +42,7 @@ let menuState = 1		// 0: Modo de juego.
 let PauseKey = 0
 let menuKeys = 0
 let cursorActive = false
+let audioEnabled = true
 
 
 // Esto evita que se active el poder durante un saque.
@@ -680,5 +681,6 @@ export {
 
 	// Cosas que no son funciones xD
 	Balls,
-	goals
+	goals,
+	audioEnabled
 }

@@ -297,6 +297,8 @@ function update() {
 			
 			
 			// Verificación de bola fantasma. (Errores en la detección de colisiones debido a Stuttering)
+			// Esto tiene otra forma de corregirse.
+			// Tienes que hacer las actualizaciones de frames sin dibujarlos.
 			// Jugador 1
 			if (Ball.position.x - Ball.radius <= player1.position.x + Players.width && !Ball.PlayerColition) {
 				if (// Evaluaciones en X
